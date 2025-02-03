@@ -1,5 +1,7 @@
 package com.uece.horas_complementares.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.uece.horas_complementares.model.user.Aluno;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -18,10 +20,11 @@ public class HoraComplementar {
     // Relacionamento 1:1 com Aluno (lado DONO)
     @OneToOne
     @JoinColumn(name = "aluno_matricula") // Coluna FK em HoraComplementar
-    private Aluno aluno; // Nome do campo deve bater com o mappedBy em Aluno
+    @JsonIgnore
+    private Aluno aluno;
 
     @OneToMany(mappedBy = "horaComplementar")
+    @JsonIgnore
     private List<SubCategoria> subCategorias;
 
-    // Getters e Setters (ou Lombok @Data)
 }

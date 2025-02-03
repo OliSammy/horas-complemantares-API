@@ -1,5 +1,7 @@
 package com.uece.horas_complementares.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.uece.horas_complementares.model.user.Professor;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -28,13 +30,16 @@ public class Evento {
 
     @ManyToOne
     @JoinColumn(name = "idCurso") // Fk para tabela Curso
+    @JsonIgnore
     private Curso idCurso;
 
     @ManyToOne
     @JoinColumn(name = "matriculaProfessor") // Fk para tabela Professor
+    @JsonIgnore
     private Professor matriculaProfessor;
 
     @OneToMany(mappedBy = "idEvento") // Relacionamento com a tabela Inscrição
+    @JsonIgnore
     private List<Inscricao> inscricoes;
 
 

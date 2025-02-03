@@ -1,9 +1,10 @@
-package com.uece.horas_complementares.model;
+package com.uece.horas_complementares.model.user;
 
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
+import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
@@ -15,6 +16,7 @@ import java.util.Collections;
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "tipo_usuario", discriminatorType = DiscriminatorType.STRING)
+@ToString(onlyExplicitlyIncluded = true)
 public abstract class User implements UserDetails {
 
     @Id
@@ -32,8 +34,12 @@ public abstract class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
+        if (tipoUsuario == null) {
+            return Collections.emptyList();
+        }
         return Collections.singletonList(() -> "ROLE_" + tipoUsuario.name());
     }
+
 
     @Override
     public String getPassword() {

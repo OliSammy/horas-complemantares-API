@@ -1,9 +1,11 @@
 package com.uece.horas_complementares.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.uece.horas_complementares.model.user.Aluno;
+import com.uece.horas_complementares.model.user.Professor;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
 
 import java.util.List;
 import jakarta.persistence.GenerationType;
@@ -18,11 +20,14 @@ public class Curso {
     private String nomeCurso;
 
     @OneToMany(mappedBy = "curso")
+    @JsonIgnore
     private List<Aluno> alunos;
 
     @OneToMany(mappedBy = "curso")
+    @JsonIgnore
     private List<Professor> professores;
 
     @OneToMany(mappedBy = "idCurso") // Relacionamento com a tabela Evento
+    @JsonIgnore
     private List<Evento> eventos;
 }

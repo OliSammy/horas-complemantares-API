@@ -1,0 +1,50 @@
+package com.uece.horas_complementares.model.user;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.uece.horas_complementares.model.Curso;
+import com.uece.horas_complementares.model.HoraComplementar;
+import com.uece.horas_complementares.model.Inscricao;
+import com.uece.horas_complementares.model.Presenca;
+import com.uece.horas_complementares.model.user.User;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.util.List;
+
+@Entity
+@DiscriminatorValue("PROFESSOR")
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class Professor extends User {
+
+    private boolean coordenador;
+
+    @ManyToOne
+    @JoinColumn(name = "idCurso")
+    @JsonIgnore
+    private Curso curso;
+
+
+    public Professor(
+            Long matricula,       // Parâmetros da classe User
+            String nome,
+            String email,
+            boolean emailValidado,
+            String senha,
+            String token,
+            TipoUsuario tipoUsuario,
+            Curso curso,          // Parâmetros específicos de Aluno
+            boolean coordenador
+    ) {
+        super(matricula, nome, email, emailValidado, senha, token, tipoUsuario);
+
+        this.curso = curso;
+        this.coordenador = coordenador;
+    }
+}
+
+
+
