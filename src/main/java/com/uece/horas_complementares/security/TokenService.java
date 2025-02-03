@@ -7,9 +7,10 @@ import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.uece.horas_complementares.model.Aluno;
+import com.uece.horas_complementares.model.user.Aluno;
 import com.uece.horas_complementares.model.exception.token.InvalidTokenException;
 import com.uece.horas_complementares.model.repository.UserRepository;
+import com.uece.horas_complementares.model.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -27,7 +28,7 @@ public class TokenService {
     private UserRepository userRepository;
 
 
-    public String generateToken(Aluno user){
+    public String generateToken(User user){
         try{
             Algorithm algorithm = Algorithm.HMAC256(secret);
             String token = JWT.create()
@@ -61,7 +62,7 @@ public class TokenService {
                     .withIssuer("Complementary_Hours").build().verify(token);
 
             String userEmail = decodedJWT.getSubject();
-            return (Aluno) userRepository.findByEmail(userEmail).get();
+            return (Aluno) userRepository.findByEmail(userEmail);
         } catch (JWTVerificationException exception) {
             throw new InvalidTokenException("Token JWT inválido");
         }

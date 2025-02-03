@@ -32,6 +32,7 @@ public class SecurityConfigurations {
                         .requestMatchers("/aluno/**").hasRole("ALUNO")
                         .requestMatchers("/professor/**").hasRole("PROFESSOR")
                         .requestMatchers("/coordenador/**").hasRole("COORDENADOR")
+                        .requestMatchers("/registro/criar").permitAll()
 
                         .requestMatchers("/v3/api-docs","/uploads/**", "/v3/api-docs/**", "/swagger-ui.html","/swagger-ui/**", "/swagger-resources", "/swagger-resources/**", "/configuration/security", "/configuration/ui", "/webjars/**", "/v2/api-docs").permitAll()
                         .anyRequest().authenticated()

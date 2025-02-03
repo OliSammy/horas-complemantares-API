@@ -3,6 +3,7 @@ package com.uece.horas_complementares.controller;
 import com.uece.horas_complementares.model.DTO.user.AuthenticationDTO;
 import com.uece.horas_complementares.model.DTO.user.LoginResponseDTO;
 import com.uece.horas_complementares.service.auth.AuthenticationService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.web.bind.annotation.*;
 import io.swagger.v3.oas.annotations.Operation;
@@ -20,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/auth")
-@SecurityRequirement(name = "BearerAuth")
+@Slf4j
 public class AuthController {
 
     @Autowired
@@ -32,7 +33,12 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity email(@RequestBody @Valid AuthenticationDTO data){
-        LoginResponseDTO loginResponseDTO = this.authenticationService.login(data);
+        LoginResponseDTO loginResponseDTO = null;
+        try {
+            loginResponseDTO = this.authenticationService.login(data);
+        } catch (Exception e) {
+            log.error("Erro durante o processamento: {}", e.getMessage(), e);
+        }
         return ResponseEntity.ok().body(loginResponseDTO);
     }
 }
