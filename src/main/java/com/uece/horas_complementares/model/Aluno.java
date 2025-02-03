@@ -1,38 +1,29 @@
 package com.uece.horas_complementares.model;
 
-import javax.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import java.util.List;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 
+@Data
 @Entity
-public class Aluno {
+@AllArgsConstructor
+@DiscriminatorValue("ALUNO")
+public class Aluno extends User {
 
-    @Id
-    private Long matricula;
-    private String nome;
-    private String email;
-    private boolean emailValidado;
-    private String senha;
-    private String token;
+   // super();
+
 
     @ManyToOne
-    @JoinColumn(name = "idCurso") // Fk para tabela Curso
-    private Curso idCurso;
+    @JoinColumn(name = "idCurso")
+    private Curso curso;
 
-    @OneToMany(mappedBy = "matriculaAluno") // Relacionamento com a tabela Inscricao
-    @JoinColumn(name = "matriculaAluno")
+    @OneToMany(mappedBy = "aluno") // Refere-se ao campo "aluno" em Inscricao
     private List<Inscricao> inscricoes;
 
-    @OneToMany(mappedBy = "matriculaAluno") // Relacionamento com a tabela Presença
-    @JoinColumn(name = "matriculaAluno")
+    @OneToMany(mappedBy = "aluno") // Refere-se ao campo "aluno" em Presenca
     private List<Presenca> presencas;
 
-    @OneToOne(mappedBy = "matriculaAluno") // Relacionamento com a tabela HoraComplementar
-    @JoinColumn(name = "matriculaAluno")
+    @OneToOne(mappedBy = "aluno") // Refere-se ao campo "aluno" em HoraComplementar
     private HoraComplementar horaComplementar;
 }

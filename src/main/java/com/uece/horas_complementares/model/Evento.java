@@ -35,7 +35,6 @@ public class Evento {
     private Professor matriculaProfessor;
 
     @OneToMany(mappedBy = "idEvento") // Relacionamento com a tabela Inscrição
-    @JoinColumn(name = "idEvento")
     private List<Inscricao> inscricoes;
 
 
