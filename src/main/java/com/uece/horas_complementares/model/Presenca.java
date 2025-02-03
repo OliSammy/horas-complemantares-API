@@ -1,11 +1,6 @@
 package com.uece.horas_complementares.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
 
 @Entity
 public class Presenca {
@@ -13,12 +8,11 @@ public class Presenca {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne
-    @JoinColumn(name = "idInscricao") // Fk para tabela Inscricao
+    @ManyToOne
+    @JoinColumn(name = "inscricao_id") // Define a coluna FK na tabela Presenca
     private Inscricao idInscricao;
 
-    @OneToOne
-    @JoinColumn(name = "matriculaAluno") // Fk para tabela Aluno
-    private Aluno matriculaAluno;
-
+    @ManyToOne
+    @JoinColumn(name = "aluno_matricula") // Adicione esta anotação para definir a coluna FK
+    private Aluno aluno;
 }

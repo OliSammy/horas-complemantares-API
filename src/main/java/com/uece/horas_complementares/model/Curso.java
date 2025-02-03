@@ -11,21 +11,18 @@ import jakarta.persistence.OneToMany;
 
 @Entity
 public class Curso {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nomeCurso;
 
-    @OneToMany(mappedBy = "idCurso")// Relacionamento com a tabela Aluno
-    @JoinColumn (name = "idCurso")
+    @OneToMany(mappedBy = "curso")
     private List<Aluno> alunos;
-    
-    @OneToMany(mappedBy = "idCurso") // Relacionamento com a tabela Professor
-    @JoinColumn (name = "idCurso")
+
+    @OneToMany(mappedBy = "curso")
     private List<Professor> professores;
 
     @OneToMany(mappedBy = "idCurso") // Relacionamento com a tabela Evento
-    @JoinColumn (name = "idCurso")
     private List<Evento> eventos;
 }
