@@ -1,6 +1,7 @@
 package com.uece.horas_complementares;
 
 import com.uece.horas_complementares.model.repository.UserRepository;
+import com.uece.horas_complementares.model.user.Coordenador;
 import com.uece.horas_complementares.model.user.Professor;
 import com.uece.horas_complementares.model.user.User;
 import jakarta.annotation.PostConstruct;
@@ -22,19 +23,18 @@ public class HorasComplementaresApplication {
 //	@PostConstruct
 //	public void insertUser(){
 //
-//		Professor aluno = new Professor(
-//				123456L,                  // matricula (Long)
-//				"Gabriel coord",               // nome
-//				"gabriel.bra@aluno.uece.br", // email
-//				true,                    // emailValidado
-//				"senha123",              // senha
-//				"tokenXYZy",              // token
-//				User.TipoUsuario.COORDENADOR,  // tipoUsuario (discriminador)
-//				null,             // curso (objeto Curso)
+//		Coordenador coord = new Coordenador(
+//				123458L,
+//				"NEGREIROS",
+//				"neg@uece.br",
+//				true,
+//				"senha123",
+//				"tokenXYZy",
+//				null, // Curso (pode ser null)
 //				true
 //		);
-//		String encryptedPassword = new BCryptPasswordEncoder().encode(aluno.getPassword());
-//		aluno.setSenha(encryptedPassword);
-//		userRepository.save(aluno);
+//		String encryptedPassword = new BCryptPasswordEncoder().encode(coord.getPassword());
+//		coord.setSenha(encryptedPassword);
+//		userRepository.save(coord);
 //	}
 }

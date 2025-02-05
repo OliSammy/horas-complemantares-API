@@ -48,7 +48,9 @@ public class RegisterService {
         }
         User newUser = null;
 
-        if (data.role().equals(User.TipoUsuario.ALUNO)){
+        String[] partesEmail = data.email().split("@");
+
+        if (partesEmail[1].equals("aluno.uece.br")){
             newUser = new Aluno();
             newUser.setMatricula(data.matricula());
             newUser.setNome(data.name());
@@ -56,15 +58,16 @@ public class RegisterService {
             newUser.setEmail(data.email());
             ((Aluno) newUser).setCurso(data.curso());
 
-        } else {
+        } else if (partesEmail[1].equals("uece.br")){
             newUser = new Professor();
             newUser.setMatricula(data.matricula());
             newUser.setNome(data.name());
             newUser.setTipoUsuario(data.role());
             newUser.setEmail(data.email());
-            ((Professor) newUser).setCoordenador(data.coordenador());
+            ((Professor) newUser).setCoordenador(false);
             ((Professor) newUser).setCurso(data.curso());
-
+        }else{
+            newUser = null;
         }
 
         String encryptedPassword = new BCryptPasswordEncoder().encode(data.password());

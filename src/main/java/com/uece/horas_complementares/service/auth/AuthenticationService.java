@@ -75,8 +75,8 @@ public class AuthenticationService {
     }
 
 
-    public Aluno get(String token){
-        Aluno user = this.tokenService.getUserFromToken(token);
+    public User get(String token){
+        User user = this.tokenService.getUserFromToken(token);
         if (user == null){
             throw new UserNotFoundException("Não foi possível recuperar os dados do usuário");
         }

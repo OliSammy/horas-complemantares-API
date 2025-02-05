@@ -10,6 +10,7 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import com.uece.horas_complementares.model.user.Aluno;
 import com.uece.horas_complementares.model.exception.token.InvalidTokenException;
 import com.uece.horas_complementares.model.repository.UserRepository;
+import com.uece.horas_complementares.model.user.Professor;
 import com.uece.horas_complementares.model.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -55,15 +56,27 @@ public class TokenService {
         }
     }
 
-    public Aluno getUserFromToken(String token) {
+    public User getUserFromToken(String token) {
         try {
             Algorithm algorithm = Algorithm.HMAC256(secret);
             DecodedJWT decodedJWT = JWT.require(algorithm)
                     .withIssuer("Complementary_Hours").build().verify(token);
 
             String userEmail = decodedJWT.getSubject();
-            return (Aluno) userRepository.findByEmail(userEmail);
-        } catch (JWTVerificationException exception) {
+
+            // Busca o usuário sem fazer casting direto
+            User user = (User) userRepository.findByEmail(userEmail);
+
+            // Verifica o tipo do usuário
+            if (user instanceof Aluno) {
+                return (Aluno) user; // Cast seguro para Aluno
+            } else if (user instanceof Professor) {
+                return (Professor) user; // Cast seguro para Professor
+            } else {
+                throw new Exception("Tipo de usuário não reconhecido");
+            }
+
+        } catch (Exception exception) {
             throw new InvalidTokenException("Token JWT inválido");
         }
     }
