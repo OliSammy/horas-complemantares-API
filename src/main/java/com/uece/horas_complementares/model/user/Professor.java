@@ -35,7 +35,7 @@ public class Professor extends User {
             boolean emailValidado,
             String senha,
             String token,
-            TipoUsuario tipoUsuario,
+            User.TipoUsuario tipoUsuario,
             Curso curso,          // Parâmetros específicos de Aluno
             boolean coordenador
     ) {

@@ -7,7 +7,7 @@ import com.uece.horas_complementares.model.Presenca;
 
 import java.util.List;
 
-public record RegisterForm(Long matricula,String name, String email, String password, User.TipoUsuario role,Curso curso, boolean coordenador) {
+public record RegisterForm(Long matricula,String name, String email, String password, User.TipoUsuario role,Curso curso) {
 }
 
 
