@@ -1,5 +1,6 @@
 package com.uece.horas_complementares.controller;
 
+import com.uece.horas_complementares.service.users.eventos.EventosService;
 import org.springframework.web.bind.annotation.RestController;
 import com.uece.horas_complementares.model.Evento;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,7 @@ import java.util.List;
 public class EventosController {
     
     @Autowired
-    private EventosService eventosService; //falta implementar
+    private EventosService eventosService; 
 
     @GetMapping
     public List<Evento> listar() {

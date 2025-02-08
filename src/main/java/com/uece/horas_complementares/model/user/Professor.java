@@ -44,6 +44,9 @@ public class Professor extends User {
         this.curso = curso;
         this.coordenador = coordenador;
     }
+    public Aluno getAluno() {
+        return null;
+    }
 }
 
 
