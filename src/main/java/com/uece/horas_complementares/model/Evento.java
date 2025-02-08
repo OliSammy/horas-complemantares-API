@@ -1,7 +1,6 @@
 package com.uece.horas_complementares.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.uece.horas_complementares.model.user.Aluno;
 import com.uece.horas_complementares.model.user.Professor;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

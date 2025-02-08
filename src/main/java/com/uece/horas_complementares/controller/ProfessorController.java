@@ -3,7 +3,6 @@ package com.uece.horas_complementares.controller;
 import com.uece.horas_complementares.model.DTO.user.EventoDTO;
 import java.util.List;
 import com.uece.horas_complementares.model.user.Professor;
-import com.uece.horas_complementares.model.Evento;
 import com.uece.horas_complementares.service.users.ProfessorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

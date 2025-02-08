@@ -1,7 +1,6 @@
 package com.uece.horas_complementares.service.users;
 
 import com.uece.horas_complementares.model.user.Aluno;
-import com.uece.horas_complementares.model.user.Professor;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -10,7 +9,6 @@ import com.uece.horas_complementares.model.Evento;
 import com.uece.horas_complementares.model.DTO.user.EventoDTO;
 import com.uece.horas_complementares.model.repository.AlunoRepository;
 import com.uece.horas_complementares.model.repository.EventoRepository;
-import com.uece.horas_complementares.model.repository.ProfessorRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
