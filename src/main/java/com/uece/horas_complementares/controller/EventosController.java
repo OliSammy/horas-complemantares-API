@@ -1,9 +1,15 @@
 package com.uece.horas_complementares.controller;
 
-import com.uece.horas_complementares.service.users.eventos.EventosService;
+import com.uece.horas_complementares.service.EventoService;
 import org.springframework.web.bind.annotation.RestController;
 import com.uece.horas_complementares.model.Evento;
+import com.uece.horas_complementares.model.DTO.user.AlunoInscritoDTO;
+import com.uece.horas_complementares.model.DTO.user.ProfessorEventoDTO;
+import com.uece.horas_complementares.model.user.Aluno;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,7 +26,7 @@ import java.util.List;
 public class EventosController {
     
     @Autowired
-    private EventosService eventosService; 
+    private EventoService eventosService; 
 
     @GetMapping
     public List<Evento> listar() {
@@ -32,40 +38,24 @@ public class EventosController {
         return eventosService.buscar(id);
     }
 
-    @GetMapping("/{id}/inscritos")
-    public List<Inscrito> listarInscritos(@PathVariable Long id) {
-        return eventosService.listarInscritos(id);
+    @GetMapping("/{eventoId}/alunos-inscritos")
+    @PreAuthorize("hasRole('PROFESSOR') or hasRole('ADMIN')")
+    public ResponseEntity<List<AlunoInscritoDTO>> listarAlunosInscritos(@PathVariable Long eventoId) {
+        return ResponseEntity.ok(eventosService.listarAlunosInscritos(eventoId));
     }
 
-    @GetMapping("/{id}/gerarQRCode")
-    public void gerarQRCode(@PathVariable Long id) {
-        eventosService.gerarQRCode(id);
+    @GetMapping("/{eventoId}/professores")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('PROFESSOR')")
+    public ResponseEntity<List<ProfessorEventoDTO>> getProfessores(@PathVariable Long eventoId) {
+        return ResponseEntity.ok(eventosService.getProfessores(eventoId));
     }
 
-    @GetMapping("/{id}/certificados/{alunoId}")
-    public void gerarCertificado(@PathVariable Long id, @PathVariable Long alunoId) {
-        eventosService.gerarCertificado(id, alunoId);
-    }
 
     @PostMapping
     public Evento criar(@RequestBody Evento evento) {
         return eventosService.criar(evento);
     }
 
-    @PostMapping("/{id}/inscrever")
-    public void inscrever(@PathVariable Long id, @RequestBody AlunoController aluno) {
-        eventosService.inscrever(id, aluno);
-    }
-
-    @PostMapping("/{id}/presença/validar/{alunoId}") //Token irá no header
-    public void validarPresenca(@PathVariable Long id, @PathVariable Long alunoId) {//atribui para um aluno
-        eventosService.validarPresenca(id, alunoId);
-    }
-
-    @PostMapping("/{id}/presença") //Token do professor irá no header 
-    public void marcarPresenca(@PathVariable Long id, @RequestBody AlunoController aluno) {//atribui para um conjunto de alunos
-        eventosService.marcarPresenca(id, aluno);
-    }
 
     @PutMapping("/{id}")
     public Evento atualizar(@PathVariable Long id, @RequestBody Evento evento) {

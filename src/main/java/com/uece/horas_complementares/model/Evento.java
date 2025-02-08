@@ -12,10 +12,19 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 
 import java.util.List;
+import java.util.Set;
 
 @Entity
 public class Evento {
+    private Set<Professor> professores;
 
+    public Set<Professor> getProfessores() {
+        return professores;
+    }
+
+    public void setProfessores(Set<Professor> professores) {
+        this.professores = professores;
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
