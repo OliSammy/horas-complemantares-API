@@ -1,0 +1,16 @@
+package com.uece.horas_complementares.model.repository;
+
+import com.uece.horas_complementares.model.user.Professor;
+import com.uece.horas_complementares.model.user.User;
+
+import java.nio.file.attribute.UserDefinedFileAttributeView;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface ProfessorRepository extends JpaRepository<Professor, Long>, ProfessorRepositoryQueries{
+ 
+    UserDetails findByMatricula(Long matricula);
+}
