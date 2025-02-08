@@ -1,7 +1,12 @@
 package com.uece.horas_complementares.controller;
 
+import com.uece.horas_complementares.model.DTO.user.EventoDTO;
+import java.util.List;
+import com.uece.horas_complementares.model.user.Professor;
+import com.uece.horas_complementares.model.Evento;
+import com.uece.horas_complementares.service.users.ProfessorService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.method.P;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,10 +19,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 @RestController
 @RequestMapping("/professores") // Classe que controla as rotas relacionadas ao professor
 
-public class Professor {
+public class ProfessorController {
     
     @Autowired
-    private ProfessorService professorService; //falta implementar
+    private ProfessorService professorService;
+
+    public ProfessorController(ProfessorService professorService) {
+        this.professorService = professorService;
+    }
+
 
     @GetMapping
     public List<Professor> listar() {
@@ -30,40 +40,27 @@ public class Professor {
     }
 
     @GetMapping("/{id}/eventos")
-    public List<Evento> listarEventos(@PathVariable Long id) {
-        return professorService.listarEventos(id);
+    public ResponseEntity<List<EventoDTO>> listarEventos(@PathVariable Long id) {
+        return ResponseEntity.ok(professorService.listarEventos(id));
     }
 
-    @GetMapping("/{id}/confirmarEmail/{token}")
-    public void confirmarEmail(@PathVariable Long id, @PathVariable String token) {
-        professorService.confirmarEmail(id, token);
-    }
 
     @PostMapping
     public Professor criar(@RequestBody Professor professor) {
         return professorService.criar(professor);
     }
     
-    @PostMapping("/login")
-    public Professor login(@RequestBody Professor professor) {
-        return professorService.login(professor);
-    }
-
-    @PostMapping("logout")
-    public void logout(@RequestBody Professor professor) {
-        professorService.logout(professor);
-    }
 
     @PutMapping("/{id}")
     public Professor atualizar(@PathVariable Long id, @RequestBody Professor professor) {
         return professorService.atualizar(id, professor);
     }
 
-    @PutMapping("/repassarCoordenaria/{id}")
-    public void repassarCoordenaria(@PathVariable Long id, @RequestBody Professor professor) {
-        professorService.repassarCoordenaria(id, professor);
-    }
-
+    // @PutMapping("/repassarCoordenaria/{id}")
+    // public void repassarCoordenaria(@PathVariable Long id, @RequestBody Professor professor) {
+    //     professorService.repassarCoordenaria(id, professor);
+    // }
+    //Falta implementar
     @DeleteMapping("/{id}")
     public void deletar(@PathVariable Long id) {
         professorService.deletar(id);
