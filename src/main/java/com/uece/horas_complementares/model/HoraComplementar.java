@@ -12,7 +12,6 @@ public class HoraComplementar {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String descricao;
     private String status;
     private String comentario;

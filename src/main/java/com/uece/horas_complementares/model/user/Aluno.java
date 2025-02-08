@@ -5,7 +5,6 @@ import com.uece.horas_complementares.model.Curso;
 import com.uece.horas_complementares.model.HoraComplementar;
 import com.uece.horas_complementares.model.Inscricao;
 import com.uece.horas_complementares.model.Presenca;
-import com.uece.horas_complementares.model.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;

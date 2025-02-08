@@ -4,12 +4,7 @@ import com.uece.horas_complementares.model.DTO.user.AuthenticationDTO;
 import com.uece.horas_complementares.model.DTO.user.LoginResponseDTO;
 import com.uece.horas_complementares.service.auth.AuthenticationService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.web.bind.annotation.*;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import com.uece.horas_complementares.security.TokenService;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
