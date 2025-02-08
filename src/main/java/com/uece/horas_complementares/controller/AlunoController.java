@@ -1,5 +1,7 @@
 package com.uece.horas_complementares.controller;
 
+import com.uece.horas_complementares.model.user.Aluno;
+import com.uece.horas_complementares.service.users.AlunoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,7 +17,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/alunos") // Classe que controla as rotas relacionadas ao aluno
 
-public class Aluno {
+public class AlunoController {
 
     @Autowired
     private AlunoService alunoService; //falta implementar
@@ -30,30 +32,21 @@ public class Aluno {
         return alunoService.buscar(id);
     }
 
-    @GetMapping("/{id}/eventos")
-    public List<Evento> listarEventos(@PathVariable Long id) {
-        return alunoService.listarEventos(id);
-    }
+    // @GetMapping("/{id}/eventos")
+    // public List<Evento> listarEventos(@PathVariable Long id) {
+    //     return alunoService.listarEventos(id);
+    // } falta implementar
 
-    @GetMapping("/{id}/confirmarEmail/{token}")
-    public void confirmarEmail(@PathVariable Long id, @PathVariable String token) {
-        alunoService.confirmarEmail(id, token);
-    }
+    // @GetMapping("/{id}/confirmarEmail/{token}")
+    // public void confirmarEmail(@PathVariable Long id, @PathVariable String token) {
+    //     alunoService.confirmarEmail(id, token);
+    // } falta implementar
 
     @PostMapping
     public Aluno criar(@RequestBody Aluno aluno) {
         return alunoService.criar(aluno);
     }
 
-    @PostMapping("/login")
-    public Aluno login(@RequestBody Aluno aluno) {
-        return alunoService.login(aluno);
-    }
-
-    @PostMapping("logout")
-    public void logout(@RequestBody Aluno aluno) {
-        alunoService.logout(aluno);
-    }
 
     @PutMapping("/{id}")
     public Aluno atualizar(@PathVariable Long id, @RequestBody Aluno aluno) {

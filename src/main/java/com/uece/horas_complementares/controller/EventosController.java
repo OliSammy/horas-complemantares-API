@@ -16,7 +16,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/eventos") // Classe que controla as rotas relacionadas ao evento
 
-public class Eventos {
+public class EventosController {
     
     @Autowired
     private EventosService eventosService; //falta implementar
@@ -52,7 +52,7 @@ public class Eventos {
     }
 
     @PostMapping("/{id}/inscrever")
-    public void inscrever(@PathVariable Long id, @RequestBody Aluno aluno) {
+    public void inscrever(@PathVariable Long id, @RequestBody AlunoController aluno) {
         eventosService.inscrever(id, aluno);
     }
 
@@ -62,7 +62,7 @@ public class Eventos {
     }
 
     @PostMapping("/{id}/presença") //Token do professor irá no header 
-    public void marcarPresenca(@PathVariable Long id, @RequestBody Aluno aluno) {//atribui para um conjunto de alunos
+    public void marcarPresenca(@PathVariable Long id, @RequestBody AlunoController aluno) {//atribui para um conjunto de alunos
         eventosService.marcarPresenca(id, aluno);
     }
 

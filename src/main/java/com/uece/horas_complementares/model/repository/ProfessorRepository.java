@@ -12,5 +12,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ProfessorRepository extends JpaRepository<Professor, Long>, ProfessorRepositoryQueries{
  
-    UserDetails findByMatricula(Long matricula);
+    Professor findByMatricula(Long matricula);
 }

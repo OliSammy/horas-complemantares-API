@@ -14,18 +14,18 @@ import org.springframework.web.bind.annotation.RequestBody;
 @RestController
 @RequestMapping("/professores") // Classe que controla as rotas relacionadas ao professor
 
-public class Professor {
+public class ProfessorController {
     
     @Autowired
     private ProfessorService professorService; //falta implementar
 
     @GetMapping
-    public List<Professor> listar() {
+    public List<ProfessorController> listar() {
         return professorService.listar();
     }
 
     @GetMapping("/{id}")
-    public Professor buscar(@PathVariable Long id) {
+    public ProfessorController buscar(@PathVariable Long id) {
         return professorService.buscar(id);
     }
 
@@ -40,27 +40,27 @@ public class Professor {
     }
 
     @PostMapping
-    public Professor criar(@RequestBody Professor professor) {
+    public ProfessorController criar(@RequestBody ProfessorController professor) {
         return professorService.criar(professor);
     }
     
     @PostMapping("/login")
-    public Professor login(@RequestBody Professor professor) {
+    public ProfessorController login(@RequestBody ProfessorController professor) {
         return professorService.login(professor);
     }
 
     @PostMapping("logout")
-    public void logout(@RequestBody Professor professor) {
+    public void logout(@RequestBody ProfessorController professor) {
         professorService.logout(professor);
     }
 
     @PutMapping("/{id}")
-    public Professor atualizar(@PathVariable Long id, @RequestBody Professor professor) {
+    public ProfessorController atualizar(@PathVariable Long id, @RequestBody ProfessorController professor) {
         return professorService.atualizar(id, professor);
     }
 
     @PutMapping("/repassarCoordenaria/{id}")
-    public void repassarCoordenaria(@PathVariable Long id, @RequestBody Professor professor) {
+    public void repassarCoordenaria(@PathVariable Long id, @RequestBody ProfessorController professor) {
         professorService.repassarCoordenaria(id, professor);
     }
 
