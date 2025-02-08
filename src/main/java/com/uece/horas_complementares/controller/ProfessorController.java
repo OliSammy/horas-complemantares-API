@@ -38,10 +38,10 @@ public class ProfessorController {
         return professorService.buscar(id);
     }
 
-    @GetMapping("/{id}/eventos")
-    public ResponseEntity<List<EventoDTO>> listarEventos(@PathVariable Long id) {
-        return ResponseEntity.ok(professorService.listarEventos(id));
-    }
+    // @GetMapping("/{id}/eventos")
+    // public ResponseEntity<List<EventoDTO>> listarEventos(@PathVariable Long id) {
+    //     return ResponseEntity.ok(professorService.listarEventos(id));
+    // }
 
 
     @PostMapping

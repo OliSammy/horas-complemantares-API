@@ -38,17 +38,11 @@ public class EventosController {
         return eventosService.buscar(id);
     }
 
-    @GetMapping("/{eventoId}/alunos-inscritos")
-    @PreAuthorize("hasRole('PROFESSOR') or hasRole('ADMIN')")
-    public ResponseEntity<List<AlunoInscritoDTO>> listarAlunosInscritos(@PathVariable Long eventoId) {
-        return ResponseEntity.ok(eventosService.listarAlunosInscritos(eventoId));
-    }
-
-    @GetMapping("/{eventoId}/professores")
-    @PreAuthorize("hasRole('ADMIN') or hasRole('PROFESSOR')")
-    public ResponseEntity<List<ProfessorEventoDTO>> getProfessores(@PathVariable Long eventoId) {
-        return ResponseEntity.ok(eventosService.getProfessores(eventoId));
-    }
+    // @GetMapping("/{eventoId}/professores")
+    // @PreAuthorize("hasRole('ADMIN') or hasRole('PROFESSOR')")
+    // public ResponseEntity<List<ProfessorEventoDTO>> getProfessores(@PathVariable Long eventoId) {
+    //     return ResponseEntity.ok(eventosService.getProfessores(eventoId));
+    // }
 
 
     @PostMapping

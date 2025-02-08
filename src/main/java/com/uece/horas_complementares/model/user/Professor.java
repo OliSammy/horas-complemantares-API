@@ -40,20 +40,7 @@ public class Professor extends User {
         this.curso = curso;
         this.coordenador = coordenador;
     }
-    private Set<Aluno> alunos; // Add this field
 
-    // other fields and methods
-
-    public Set<Aluno> getAlunos() {
-        return alunos;
-    }
-
-    public void setAlunos(Set<Aluno> alunos) {
-        this.alunos = alunos;
-    }
-    public Aluno getAluno() {
-        return null;
-    }
 }
 
 
