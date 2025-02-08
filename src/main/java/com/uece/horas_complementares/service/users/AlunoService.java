@@ -8,7 +8,6 @@ import java.util.stream.Collectors;
 import com.uece.horas_complementares.model.Evento;
 import com.uece.horas_complementares.model.DTO.user.EventoDTO;
 import com.uece.horas_complementares.model.repository.AlunoRepository;
-import com.uece.horas_complementares.model.repository.EventoRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,9 +17,6 @@ public class AlunoService {
 
     @Autowired
     private AlunoRepository alunoRepository;
-
-    @Autowired
-    private EventoRepository eventoRepository;
 
     public List<Aluno> listar() {
         return alunoRepository.findAll();
@@ -47,29 +43,29 @@ public class AlunoService {
         alunoRepository.deleteByMatricula(matricula);
     }
 
-    public List<EventoDTO> listarEventos(Long alunoId) {
-        Aluno aluno = alunoRepository.findById(alunoId)
-                .orElseThrow(() -> new RuntimeException("Aluno não encontrado"));
+    // public List<EventoDTO> listarEventos(Long alunoId) {
+    //     Aluno aluno = alunoRepository.findById(alunoId)
+    //             .orElseThrow(() -> new RuntimeException("Aluno não encontrado"));
 
-        List<Evento> eventos = eventoRepository.findByMatriculaAluno(aluno);
-        return eventos.stream().map(this::toDTO).collect(Collectors.toList());
+    //     List<Evento> eventos = eventoRepository.findByMatriculaAluno(aluno);
+    //     return eventos.stream().map(this::toDTO).collect(Collectors.toList());
 
-    }
-    private EventoDTO toDTO(Evento evento) {
-        return new EventoDTO(
-            evento.getId(),
-            evento.getNome(),
-            evento.getBanner(),
-            evento.getTipoHorasComplementares(),
-            evento.getDataInicial(),
-            evento.getDataFinal(),
-            evento.getHorarioInicial(),
-            evento.getHorarioFinal(),
-            evento.getLimiteDedescrição(),
-            evento.getDescricao(),
-            evento.getIdCurso() != null ? evento.getIdCurso().getId() : null,
-            evento.getMatriculaProfessor() != null && evento.getMatriculaProfessor().getAluno() != null ? evento.getMatriculaProfessor().getAluno().getMatricula() : null
-        );
-    }
+    // }
+    // private EventoDTO toDTO(Evento evento) {
+    //     return new EventoDTO(
+    //         evento.getId(),
+    //         evento.getNome(),
+    //         evento.getBanner(),
+    //         evento.getTipoHorasComplementares(),
+    //         evento.getDataInicial(),
+    //         evento.getDataFinal(),
+    //         evento.getHorarioInicial(),
+    //         evento.getHorarioFinal(),
+    //         evento.getLimiteDedescrição(),
+    //         evento.getDescricao(),
+    //         evento.getIdCurso() != null ? evento.getIdCurso().getId() : null,
+    //         evento.getMatriculaProfessor() != null && evento.getMatriculaProfessor().getAluno() != null ? evento.getMatriculaProfessor().getAluno().getMatricula() : null
+    //     );
+    // }
     // }
 }
