@@ -3,7 +3,6 @@ package com.uece.horas_complementares.model.user;
 import com.uece.horas_complementares.model.Curso;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

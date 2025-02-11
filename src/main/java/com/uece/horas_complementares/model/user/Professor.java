@@ -2,16 +2,11 @@ package com.uece.horas_complementares.model.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.uece.horas_complementares.model.Curso;
-import com.uece.horas_complementares.model.HoraComplementar;
-import com.uece.horas_complementares.model.Inscricao;
-import com.uece.horas_complementares.model.Presenca;
-import com.uece.horas_complementares.model.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.List;
+import java.util.Set;
 
 @Entity
 @DiscriminatorValue("PROFESSOR")
@@ -38,12 +33,14 @@ public class Professor extends User {
             User.TipoUsuario tipoUsuario,
             Curso curso,          // Parâmetros específicos de Aluno
             boolean coordenador
-    ) {
+             )
+              {
         super(matricula, nome, email, emailValidado, senha, token, tipoUsuario);
 
         this.curso = curso;
         this.coordenador = coordenador;
     }
+
 }
 
 
