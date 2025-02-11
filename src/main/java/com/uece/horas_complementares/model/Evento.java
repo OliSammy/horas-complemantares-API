@@ -9,10 +9,16 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 import java.util.Set;
 
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 public class Evento {
     @Id
@@ -41,6 +47,15 @@ public class Evento {
     @OneToMany(mappedBy = "idEvento") // Relacionamento com a tabela Inscrição
     @JsonIgnore
     private List<Inscricao> inscricoes;
+
+    public Evento(String nome, String banner, String tipoHorasComplementares, String dataInicial, String dataFinal, Professor matricula) {
+        this.nome = nome;
+        this.banner = banner;
+        this.tipoHorasComplementares = tipoHorasComplementares;
+        this.dataInicial = dataInicial;
+        this.dataFinal = dataFinal;
+        this.matriculaProfessor = matricula;
+    }
 
     public Long getId() {
         return id;

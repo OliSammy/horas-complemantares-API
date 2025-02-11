@@ -23,7 +23,7 @@ public class AlunoService {
     }
 
     public Aluno buscar(Long matricula) {
-        return alunoRepository.findByMatricula(matricula);
+        return alunoRepository.findByMatricula(matricula).get();
     }
 
     public Aluno criar(Aluno aluno) {
@@ -31,7 +31,7 @@ public class AlunoService {
     }
 
     public Aluno atualizar(Long matricula, Aluno aluno) {
-        Aluno alunoAtualizado = alunoRepository.findByMatricula(matricula);
+        Aluno alunoAtualizado = alunoRepository.findByMatricula(matricula).get();
         alunoAtualizado.setNome(aluno.getNome());
         alunoAtualizado.setEmail(aluno.getEmail());
         alunoAtualizado.setSenha(aluno.getSenha());

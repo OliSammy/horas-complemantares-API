@@ -3,8 +3,16 @@ package com.uece.horas_complementares.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.uece.horas_complementares.model.user.Aluno;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.util.List;
 
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 public class Inscricao {
     @Id
@@ -24,4 +32,9 @@ public class Inscricao {
     @OneToMany(mappedBy = "idInscricao") // "idInscricao" é o campo em Presenca que referencia Inscricao
     @JsonIgnore
     private List<Presenca> presencas;
+
+    public Inscricao(Aluno aluno, Evento evento) {
+        this.aluno = aluno;
+        this.idEvento = evento;
+    }
 }

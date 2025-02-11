@@ -1,10 +1,7 @@
 package com.uece.horas_complementares.model.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.uece.horas_complementares.model.Curso;
-import com.uece.horas_complementares.model.HoraComplementar;
-import com.uece.horas_complementares.model.Inscricao;
-import com.uece.horas_complementares.model.Presenca;
+import com.uece.horas_complementares.model.*;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -60,4 +57,6 @@ public class Aluno extends User {
         this.presencas = presencas;
         this.horaComplementar = horaComplementar;
     }
+
+
 }
