@@ -1,11 +1,20 @@
-package com.uece.horas_complementares.service;
+package com.uece.horas_complementares.service.evento;
 
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Optional;
+
+import com.uece.horas_complementares.model.DTO.user.EventoDTO;
+import com.uece.horas_complementares.model.Inscricao;
+import com.uece.horas_complementares.model.repository.AlunoRepository;
 import com.uece.horas_complementares.model.repository.EventoRepository;
+import com.uece.horas_complementares.model.repository.InscricaoRepository;
+import com.uece.horas_complementares.model.repository.ProfessorRepository;
+import com.uece.horas_complementares.model.user.Aluno;
+import com.uece.horas_complementares.security.TokenService;
+import com.uece.horas_complementares.service.inscricaoService.InscricaoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
-import java.util.Set;
 
 import com.uece.horas_complementares.model.Evento;
 
@@ -13,11 +22,28 @@ import com.uece.horas_complementares.model.DTO.user.ProfessorEventoDTO;
 
 
 import com.uece.horas_complementares.model.user.Professor;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 
 @Service
 public class EventoService {
     @Autowired
     private EventoRepository eventoRepository;
+
+
+    @Autowired
+    private AlunoRepository alunoRepository;
+
+
+    @Autowired
+    private TokenService tokenService;
+
+    @Autowired
+    private InscricaoService inscricaoService;
+
+    @Autowired
+    private InscricaoRepository inscricaoRepository;
   
   public List<Evento> listar() {
     return eventoRepository.findAll();
@@ -25,9 +51,28 @@ public class EventoService {
   public Evento buscar(Long id) {
     return eventoRepository.findById(id).get();
   }
-  public Evento criar(Evento evento) {
-    return eventoRepository.save(evento);
+
+
+
+  public Evento criar(EventoDTO evento, Professor matricula) {
+
+    Evento newEvento = new Evento();
+
+    newEvento.setBanner(evento.getBanner());
+    newEvento.setDescricao(evento.getDescricao());
+    newEvento.setTipoHorasComplementares(evento.getTipoHorasComplementares());
+    newEvento.setDataInicial(evento.getDataInicial());
+    newEvento.setDataFinal(evento.getDataFinal());
+    newEvento.setHorarioInicial(evento.getHorarioInicial());
+    newEvento.setHorarioFinal(evento.getHorarioFinal());
+    newEvento.setMatriculaProfessor(matricula);
+    newEvento.setLimiteDedescrição(evento.getLimiteDedescrição());
+    newEvento.setNome(evento.getNome());
+
+    return eventoRepository.save(newEvento);
   }
+
+
   public Evento atualizar(Long id, Evento evento) {
     Evento eventoAtualizado = eventoRepository.findById(id).get();
     eventoAtualizado.setNome(evento.getNome());
@@ -67,6 +112,24 @@ public class EventoService {
     private ProfessorEventoDTO toProfessorDTO(Professor professor) {
         return new ProfessorEventoDTO(professor.getMatricula(), professor.getNome(), professor.getEmail());
     }
+
+    public void inscreverAluno(Long idEvento, Aluno aluno) {
+
+
+      Evento evento = eventoRepository.findById(idEvento)
+              .orElseThrow(() -> new RuntimeException("Evento não encontrado"));
+      System.out.println("evento: " + evento);
+
+      Inscricao inscricao = new Inscricao(aluno, evento);
+
+      inscricaoRepository.save(inscricao);
+
+      aluno.getInscricoes().add(inscricao);
+
+      alunoRepository.save(aluno);
+    }
+
+
 }
 
 

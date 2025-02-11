@@ -1,23 +1,24 @@
 package com.uece.horas_complementares.controller;
 
-import com.uece.horas_complementares.service.EventoService;
-import org.springframework.web.bind.annotation.RestController;
-import com.uece.horas_complementares.model.Evento;
-import com.uece.horas_complementares.model.DTO.user.AlunoInscritoDTO;
-import com.uece.horas_complementares.model.DTO.user.ProfessorEventoDTO;
+import com.uece.horas_complementares.model.DTO.user.EventoDTO;
+import com.uece.horas_complementares.model.Inscricao;
+import com.uece.horas_complementares.model.repository.AlunoRepository;
+import com.uece.horas_complementares.model.repository.EventoRepository;
+import com.uece.horas_complementares.model.repository.InscricaoRepository;
 import com.uece.horas_complementares.model.user.Aluno;
+import com.uece.horas_complementares.model.user.Professor;
+import com.uece.horas_complementares.model.user.User;
+import com.uece.horas_complementares.security.TokenService;
+import com.uece.horas_complementares.service.evento.EventoService;
+import org.springframework.http.HttpHeaders;
+import org.springframework.web.bind.annotation.*;
+import com.uece.horas_complementares.model.Evento;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.PutMapping;
+
 import java.util.List;
+import java.util.Optional;
 
 
 @RestController
@@ -26,7 +27,19 @@ import java.util.List;
 public class EventosController {
     
     @Autowired
-    private EventoService eventosService; 
+    private EventoService eventosService;
+
+    @Autowired
+    private TokenService tokenService;
+
+    @Autowired
+    private EventoRepository eventoRepository;
+
+    @Autowired
+    private AlunoRepository alunoRepository;
+
+    @Autowired
+    private InscricaoRepository inscricaoRepository;
 
     @GetMapping
     public List<Evento> listar() {
@@ -46,8 +59,11 @@ public class EventosController {
 
 
     @PostMapping
-    public Evento criar(@RequestBody Evento evento) {
-        return eventosService.criar(evento);
+    public Evento criar(@RequestBody EventoDTO evento, @RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader) {
+        String jwtToken = authorizationHeader.substring(7);
+        this.tokenService.validateToken(jwtToken);
+        Professor usuario = (Professor) this.tokenService.getUserFromToken(jwtToken);
+        return eventosService.criar(evento, usuario);
     }
 
 
@@ -59,4 +75,17 @@ public class EventosController {
     public void deletar(@PathVariable Long id) {
         eventosService.deletar(id);
     }
+
+    @PutMapping("/inscricao/{idEvento}")
+    public ResponseEntity<?> inscreverAluno(@PathVariable Long idEvento, @RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader) {
+        String jwtToken = authorizationHeader.substring(7);
+        this.tokenService.validateToken(jwtToken);
+        Aluno usuario = (Aluno) this.tokenService.getUserFromToken(jwtToken);
+        System.out.println("Aluno: " + usuario.getNome());
+
+        eventosService.inscreverAluno(idEvento, usuario);
+        return ResponseEntity.ok().body("Inscrição realizada com sucesso.");
+    }
+
+
 }
