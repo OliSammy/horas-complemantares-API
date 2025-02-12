@@ -39,8 +39,8 @@ public class AlunoController {
     }
 
     @GetMapping("/{id}/eventos")
-    public ResponseEntity<List<Evento>> listarEventosPorAluno(@PathVariable Long matricula) {
-        List<Evento> eventos = inscricaoService.listarEventosPorAluno(matricula);
+    public ResponseEntity<List<Evento>> listarEventosPorAluno(@PathVariable Long id) {
+        List<Evento> eventos = inscricaoService.listarEventosPorAluno(id);
         if (eventos.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
