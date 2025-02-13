@@ -23,7 +23,7 @@ public class SecurityConfigurations {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
-        return  httpSecurity
+        return httpSecurity
                 .csrf(csrf -> csrf.disable())
                 .cors(Customizer.withDefaults())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -33,20 +33,21 @@ public class SecurityConfigurations {
                         .requestMatchers("/professor/**").hasRole("PROFESSOR")
                         .requestMatchers("/coordenador/**").hasRole("COORDENADOR")
                         .requestMatchers("/registro/criar").permitAll()
-                        .requestMatchers("/eventos").hasRole("ALUNO")
-                        .requestMatchers("/eventos").hasRole("PROFESSOR")
-                        .requestMatchers(HttpMethod.PUT,"/evento/inscricao/{idEvento}").hasRole("ALUNO")
+                        .requestMatchers("/eventos").hasAnyRole("ALUNO", "PROFESSOR")
+                        .requestMatchers(HttpMethod.PUT, "/evento/inscricao/{idEvento}").hasRole("ALUNO")
 
-                        .requestMatchers("/v3/api-docs","/uploads/**", "/v3/api-docs/**", "/swagger-ui.html","/swagger-ui/**", "/swagger-resources", "/swagger-resources/**", "/configuration/security", "/configuration/ui", "/webjars/**", "/v2/api-docs").permitAll()
-                        .anyRequest().authenticated()
-                )
+                        .requestMatchers("/v3/api-docs", "/uploads/**", "/v3/api-docs/**", "/swagger-ui.html",
+                                "/swagger-ui/**", "/swagger-resources", "/swagger-resources/**",
+                                "/configuration/security", "/configuration/ui", "/webjars/**", "/v2/api-docs")
+                        .permitAll()
+                        .anyRequest().authenticated())
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 
-
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration)
+            throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
 
