@@ -1,8 +1,11 @@
 package com.uece.horas_complementares.controller;
 
+import com.uece.horas_complementares.model.Evento;
 import com.uece.horas_complementares.model.user.Aluno;
+import com.uece.horas_complementares.service.inscricaoService.InscricaoService;
 import com.uece.horas_complementares.service.users.AlunoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,7 +23,10 @@ import java.util.List;
 public class AlunoController {
 
     @Autowired
-    private AlunoService alunoService; //falta implementar
+    private AlunoService alunoService; 
+
+    @Autowired
+    private InscricaoService inscricaoService;
 
     @GetMapping
     public List<Aluno> listar() {
@@ -32,15 +38,14 @@ public class AlunoController {
         return alunoService.buscar(id);
     }
 
-    // @GetMapping("/{id}/eventos")
-    // public List<Evento> listarEventos(@PathVariable Long id) {
-    //     return alunoService.listarEventos(id);
-    // } falta implementar
-
-    // @GetMapping("/{id}/confirmarEmail/{token}")
-    // public void confirmarEmail(@PathVariable Long id, @PathVariable String token) {
-    //     alunoService.confirmarEmail(id, token);
-    // } falta implementar
+    @GetMapping("/{id}/eventos")
+    public ResponseEntity<List<Evento>> listarEventosPorAluno(@PathVariable Long id) {
+        List<Evento> eventos = inscricaoService.listarEventosPorAluno(id);
+        if (eventos.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(eventos);
+    }
 
     @PostMapping
     public Aluno criar(@RequestBody Aluno aluno) {
