@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 
@@ -84,7 +85,7 @@ public class EventosController {
         System.out.println("Aluno: " + usuario.getNome());
 
         eventosService.inscreverAluno(idEvento, usuario);
-        return ResponseEntity.ok().body("Inscrição realizada com sucesso.");
+        return ResponseEntity.ok().body(Map.of("msg", "Inscrição realizada com sucesso."));
     }
 
 
