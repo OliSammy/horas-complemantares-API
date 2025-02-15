@@ -33,7 +33,6 @@ public class SecurityConfigurations {
                         .requestMatchers("/professor/**").hasRole("PROFESSOR")
                         .requestMatchers("/coordenador/**").hasRole("COORDENADOR")
                         .requestMatchers("/registro/criar").permitAll()
-                        .requestMatchers("/eventos").hasAnyRole("ALUNO", "PROFESSOR")
                         .requestMatchers(HttpMethod.PUT, "/evento/inscricao/{idEvento}").hasRole("ALUNO")
                         .requestMatchers(HttpMethod.GET,"/eventos/alunos/{id}").hasRole("ALUNO")
                         .requestMatchers(HttpMethod.GET,"/eventos/professor/{id}").hasRole("PROFESSOR")

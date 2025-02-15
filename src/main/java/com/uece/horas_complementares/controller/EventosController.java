@@ -11,11 +11,13 @@ import com.uece.horas_complementares.model.user.User;
 import com.uece.horas_complementares.security.TokenService;
 import com.uece.horas_complementares.service.evento.EventoService;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import com.uece.horas_complementares.model.Evento;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Map;
@@ -75,12 +77,16 @@ public class EventosController {
     }
 
 
-    @PostMapping
-    public Evento criar(@RequestBody EventoDTO evento, @RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader) {
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<?> criar(
+            @RequestPart("evento") EventoDTO evento,
+            @RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader,
+            @RequestPart("file") MultipartFile file) {
         String jwtToken = authorizationHeader.substring(7);
         this.tokenService.validateToken(jwtToken);
         Professor usuario = (Professor) this.tokenService.getUserFromToken(jwtToken);
-        return eventosService.criar(evento, usuario);
+        Evento newEvento = eventosService.criar(evento, usuario,file);
+        return ResponseEntity.ok().body(newEvento);
     }
 
 
