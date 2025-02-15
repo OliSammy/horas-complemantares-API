@@ -24,6 +24,7 @@ import org.springframework.stereotype.Service;
 import com.uece.horas_complementares.model.Evento;
 import com.uece.horas_complementares.model.DTO.user.ProfessorEventoDTO;
 import com.uece.horas_complementares.model.spec.EventoByAlunoMatricula;
+import com.uece.horas_complementares.model.spec.EventoByProfessor;
 import com.uece.horas_complementares.model.spec.EventoNaoInscritoPorAluno;
 import com.uece.horas_complementares.model.user.Professor;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -156,6 +157,11 @@ public class EventoService {
   }
   public List<Evento> getEventosDisponiveis(Long alunoMatricula) {
     Specification<Evento> spec = new EventoNaoInscritoPorAluno(alunoMatricula);
+    List<Evento> eventos = eventoRepository.findAll(spec);
+    return eventos;
+  }
+  public List<Evento> getEventosProfessor(Long professorMatricula) {
+    Specification<Evento> spec = new EventoByProfessor(professorMatricula);
     List<Evento> eventos = eventoRepository.findAll(spec);
     return eventos;
   }

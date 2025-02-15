@@ -68,6 +68,14 @@ public class EventosController {
         List<Evento> eventos = eventosService.getEventosDisponiveis(id);
         return ResponseEntity.ok().body(eventos);
     }
+    @GetMapping("/professor/{id}")
+    public ResponseEntity<?> listarEventosProfessor(@RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader, @PathVariable Long id) {
+        String jwtToken = authorizationHeader.substring(7);
+        this.tokenService.validateToken(jwtToken);
+        List<Evento> eventos = eventosService.getEventosProfessor(id);
+        return ResponseEntity.ok().body(eventos);
+    }
+
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> criar(
