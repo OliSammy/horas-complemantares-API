@@ -35,6 +35,7 @@ public class SecurityConfigurations {
                         .requestMatchers("/registro/criar").permitAll()
                         .requestMatchers("/eventos").hasAnyRole("ALUNO", "PROFESSOR")
                         .requestMatchers(HttpMethod.PUT, "/evento/inscricao/{idEvento}").hasRole("ALUNO")
+                        .requestMatchers(HttpMethod.GET,"/eventos/alunos/{id}").hasAnyRole("ALUNO")
 
                         .requestMatchers("/v3/api-docs", "/uploads/**", "/v3/api-docs/**", "/swagger-ui.html",
                                 "/swagger-ui/**", "/swagger-resources", "/swagger-resources/**",

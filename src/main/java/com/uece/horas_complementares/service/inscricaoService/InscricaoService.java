@@ -24,7 +24,19 @@ public class InscricaoService {
         for (Inscricao inscricao : inscricoes) {
             eventos.add(inscricao.getEvento()); // Adiciona o evento manualmente
         }
-
         return eventos;
+    }
+    public List<Evento> listarEventosNaoInscrito (Long alunoMatricula) {
+        List<Evento> eventos = new ArrayList<>();
+        List<Evento> eventosNaoInscritos = new ArrayList<>();
+
+
+
+        for (Evento evento : eventos) {
+            if (!eventos.contains(evento)) {
+                eventosNaoInscritos.add(evento);
+            }
+        }
+        return eventosNaoInscritos;
     }
 }

@@ -40,11 +40,7 @@ public class AlunoController {
 
     @GetMapping("/{id}/eventos")
     public ResponseEntity<List<Evento>> listarEventosPorAluno(@PathVariable Long id) {
-        List<Evento> eventos = inscricaoService.listarEventosPorAluno(id);
-        if (eventos.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.ok(eventos);
+        return ResponseEntity.ok(inscricaoService.listarEventosPorAluno(id));
     }
 
     @PostMapping
