@@ -71,7 +71,7 @@ public class EventoService {
 
 
     if (!(file.isEmpty())) {
-      String caminho = this.uploadFoto(file,evento.getId());
+      String caminho = this.uploadFoto(file,evento.getNome());
       newEvento.setBanner(caminho);
 
     }
@@ -89,7 +89,7 @@ public class EventoService {
     return eventoRepository.save(newEvento);
   }
 
-  public String uploadFoto(MultipartFile file, Long eventoId) {
+  public String uploadFoto(MultipartFile file, String nome) {
 
     long tamanhoMaximo = 5 * 1024 * 1024; // 5 MB
     List<String> tiposPermitidos = Arrays.asList("image/jpeg", "image/png");
@@ -98,7 +98,7 @@ public class EventoService {
       throw new IllegalArgumentException("Selecione um arquivo.");
     }
 
-    Path userUploadDir = Paths.get(UPLOAD_DIR, eventoId.toString());
+    Path userUploadDir = Paths.get(UPLOAD_DIR, nome);
     try {
       if (!Files.exists(userUploadDir)) {
         Files.createDirectories(userUploadDir);
@@ -126,7 +126,7 @@ public class EventoService {
       Files.write(filePath, file.getBytes());
 
       // Retorna o caminho do arquivo salvo
-      return "/uploads/" + eventoId +  "/" + fileName;
+      return "/uploads/" + nome +  "/" + fileName;
     } catch (IOException e) {
       throw new RuntimeException("Erro ao carregar o arquivo " + file.getOriginalFilename(), e);
     }

@@ -82,6 +82,7 @@ public class EventosController {
             @RequestPart("evento") EventoDTO evento,
             @RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader,
             @RequestPart("file") MultipartFile file) {
+        System.out.println("Evento: " + evento);
         String jwtToken = authorizationHeader.substring(7);
         this.tokenService.validateToken(jwtToken);
         Professor usuario = (Professor) this.tokenService.getUserFromToken(jwtToken);

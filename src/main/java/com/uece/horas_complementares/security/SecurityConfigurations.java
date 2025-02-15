@@ -33,9 +33,11 @@ public class SecurityConfigurations {
                         .requestMatchers("/professor/**").hasRole("PROFESSOR")
                         .requestMatchers("/coordenador/**").hasRole("COORDENADOR")
                         .requestMatchers("/registro/criar").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/eventos").hasRole("PROFESSOR")
                         .requestMatchers(HttpMethod.PUT, "/evento/inscricao/{idEvento}").hasRole("ALUNO")
                         .requestMatchers(HttpMethod.GET,"/eventos/alunos/{id}").hasRole("ALUNO")
                         .requestMatchers(HttpMethod.GET,"/eventos/professor/{id}").hasRole("PROFESSOR")
+                        .requestMatchers(HttpMethod.GET,"/eventos/alunos/{id}/disponiveis").hasRole("ALUNO")
 
                         .requestMatchers("/v3/api-docs", "/uploads/**", "/v3/api-docs/**", "/swagger-ui.html",
                                 "/swagger-ui/**", "/swagger-resources", "/swagger-resources/**",
