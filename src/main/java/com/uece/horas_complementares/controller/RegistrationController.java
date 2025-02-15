@@ -21,10 +21,7 @@ public class RegistrationController {
     private RegisterService registerService;
 
     @PostMapping("/criar")
-    public ResponseEntity register(@RequestBody @Valid RegisterForm data,@RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader) throws Exception {
-        String jwtToken = authorizationHeader.substring(7);
-        this.tokenService.validateToken(jwtToken);
-        String idUserEnroller = this.tokenService.getUserFromToken(jwtToken).getNome();
+    public ResponseEntity register(@RequestBody @Valid RegisterForm data) throws Exception {
         User user = this.registerService.create(data);
         return ResponseEntity.ok().body(user);
     }
