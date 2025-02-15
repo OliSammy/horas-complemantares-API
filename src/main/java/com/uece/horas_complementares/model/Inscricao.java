@@ -32,7 +32,10 @@ public class Inscricao {
     @OneToMany(mappedBy = "idInscricao") // "idInscricao" é o campo em Presenca que referencia Inscricao
     @JsonIgnore
     private List<Presenca> presencas;
-
+    
+    public Evento getEvento() {
+        return idEvento;
+    }
     public Inscricao(Aluno aluno, Evento evento) {
         this.aluno = aluno;
         this.idEvento = evento;

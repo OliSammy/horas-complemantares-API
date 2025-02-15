@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 
@@ -35,12 +36,6 @@ public class EventosController {
     @Autowired
     private EventoRepository eventoRepository;
 
-    @Autowired
-    private AlunoRepository alunoRepository;
-
-    @Autowired
-    private InscricaoRepository inscricaoRepository;
-
     @GetMapping
     public List<Evento> listar() {
         return eventosService.listar();
@@ -57,6 +52,20 @@ public class EventosController {
     //     return ResponseEntity.ok(eventosService.getProfessores(eventoId));
     // }
 
+    @GetMapping("/alunos/{id}")
+    public ResponseEntity<?> listarEventosPorAluno(@RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader, @PathVariable Long id) {
+        String jwtToken = authorizationHeader.substring(7);
+        this.tokenService.validateToken(jwtToken);
+        List<Evento> eventos = eventosService.getEventosByAlunoMatricula(id);
+        return ResponseEntity.ok().body(eventos);
+    }
+    @GetMapping("/alunos/{id}/disponiveis")
+    public ResponseEntity<?> listarEventosDisponiveis(@RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader, @PathVariable Long id) {
+        String jwtToken = authorizationHeader.substring(7);
+        this.tokenService.validateToken(jwtToken);
+        List<Evento> eventos = eventosService.getEventosDisponiveis(id);
+        return ResponseEntity.ok().body(eventos);
+    }
 
     @PostMapping
     public Evento criar(@RequestBody EventoDTO evento, @RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader) {
@@ -84,7 +93,7 @@ public class EventosController {
         System.out.println("Aluno: " + usuario.getNome());
 
         eventosService.inscreverAluno(idEvento, usuario);
-        return ResponseEntity.ok().body("Inscrição realizada com sucesso.");
+        return ResponseEntity.ok().body(Map.of("msg", "Inscrição realizada com sucesso."));
     }
 
 
