@@ -1,5 +1,10 @@
 package com.uece.horas_complementares.service.evento;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,6 +29,7 @@ import com.uece.horas_complementares.model.user.Professor;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class EventoService {
@@ -43,7 +49,12 @@ public class EventoService {
 
     @Autowired
     private InscricaoRepository inscricaoRepository;
-  
+
+
+
+    private static final String UPLOAD_DIR = "src/main/resources/uploads/";
+
+
   public List<Evento> listar() {
     return eventoRepository.findAll();
   }
@@ -53,11 +64,17 @@ public class EventoService {
 
 
 
-  public Evento criar(EventoDTO evento, Professor matricula) {
+  public Evento criar(EventoDTO evento, Professor matricula, MultipartFile file) {
 
     Evento newEvento = new Evento();
 
-    newEvento.setBanner(evento.getBanner());
+
+    if (!(file.isEmpty())) {
+      String caminho = this.uploadFoto(file,evento.getId());
+      newEvento.setBanner(caminho);
+
+    }
+
     newEvento.setDescricao(evento.getDescricao());
     newEvento.setTipoHorasComplementares(evento.getTipoHorasComplementares());
     newEvento.setDataInicial(evento.getDataInicial());
@@ -70,6 +87,53 @@ public class EventoService {
 
     return eventoRepository.save(newEvento);
   }
+
+  public String uploadFoto(MultipartFile file, Long eventoId) {
+
+    long tamanhoMaximo = 5 * 1024 * 1024; // 5 MB
+    List<String> tiposPermitidos = Arrays.asList("image/jpeg", "image/png");
+
+    if (file == null || file.isEmpty()) {
+      throw new IllegalArgumentException("Selecione um arquivo.");
+    }
+
+    Path userUploadDir = Paths.get(UPLOAD_DIR, eventoId.toString());
+    try {
+      if (!Files.exists(userUploadDir)) {
+        Files.createDirectories(userUploadDir);
+      }
+    } catch (IOException e) {
+      throw new RuntimeException("Erro ao criar o diretório de upload para o evento.", e);
+    }
+
+    if (file.getSize() > tamanhoMaximo) {
+      throw new IllegalArgumentException("O arquivo " + file.getOriginalFilename()
+              + " é muito grande. O tamanho máximo permitido é de 5 MB.");
+    }
+
+    String tipoConteudo = file.getContentType();
+    if (!tiposPermitidos.contains(tipoConteudo)) {
+      throw new IllegalArgumentException("Tipo de arquivo não suportado para o arquivo "
+              + file.getOriginalFilename() + ". Apenas imagens JPEG e PNG são permitidas.");
+    }
+
+    try {
+      String fileName = file.getOriginalFilename();
+      Path filePath = userUploadDir.resolve(fileName);
+
+      // Salva o arquivo no diretório específico do evento
+      Files.write(filePath, file.getBytes());
+
+      // Retorna o caminho do arquivo salvo
+      return "/uploads/" + eventoId +  "/" + fileName;
+    } catch (IOException e) {
+      throw new RuntimeException("Erro ao carregar o arquivo " + file.getOriginalFilename(), e);
+    }
+  }
+
+
+
+
 
 
   public Evento atualizar(Long id, Evento evento) {
