@@ -12,8 +12,10 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class EventoByAlunoMatricula implements Specification<Evento> {
     private Long alunoMatricula;
+
     @Override
     public Predicate toPredicate(Root<Evento> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
         return criteriaBuilder.equal(root.get("inscricoes").get("aluno").get("matricula"), alunoMatricula);
     }
+
 }
