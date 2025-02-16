@@ -1,6 +1,6 @@
 package com.uece.horas_complementares.controller;
 
-import com.uece.horas_complementares.model.DTO.evento.PresencaDTO;
+
 import com.uece.horas_complementares.model.DTO.user.EventoDTO;
 import com.uece.horas_complementares.model.Inscricao;
 import com.uece.horas_complementares.model.Presenca;
