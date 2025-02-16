@@ -3,15 +3,18 @@ package com.uece.horas_complementares.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.uece.horas_complementares.model.user.Aluno;
 import jakarta.persistence.*;
+import lombok.Data;
 
 import java.util.List;
 
+@Data
 @Entity
 public class HoraComplementar {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private String certificado;
     private String descricao;
     private String status;
     private String comentario;

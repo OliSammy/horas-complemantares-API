@@ -25,8 +25,9 @@ public class Evento {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nome;
-    private String banner;//gabriel como bota isso como imagem ?S KSKSKSKSK
+    private String banner;
     private String tipoHorasComplementares;
+    private int quantidadeHorasComplementares;
     private String dataInicial;
     private String dataFinal;
     private String horarioInicial;
@@ -48,10 +49,11 @@ public class Evento {
     @JsonIgnore
     private List<Inscricao> inscricoes;
 
-    public Evento(String nome, String banner, String tipoHorasComplementares, String dataInicial, String dataFinal, Professor matricula) {
+    public Evento(String nome, String banner, String tipoHorasComplementares,int quantidadeHorasComplementares, String dataInicial, String dataFinal, Professor matricula) {
         this.nome = nome;
         this.banner = banner;
         this.tipoHorasComplementares = tipoHorasComplementares;
+        this.quantidadeHorasComplementares = quantidadeHorasComplementares;
         this.dataInicial = dataInicial;
         this.dataFinal = dataFinal;
         this.matriculaProfessor = matricula;
@@ -79,6 +81,12 @@ public class Evento {
 
     public void setBanner(String banner) {
         this.banner = banner;
+    }
+    public int getQuantidadeHorasComplementares() {
+        return quantidadeHorasComplementares;
+    }
+    public void setQuantidadeHorasComplementares(int quantidadeHorasComplementares) {
+        this.quantidadeHorasComplementares = quantidadeHorasComplementares;
     }
 
     public String getTipoHorasComplementares() {
