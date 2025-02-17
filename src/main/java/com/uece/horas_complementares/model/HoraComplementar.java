@@ -14,10 +14,7 @@ public class HoraComplementar {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String certificado;
-    private String descricao;
-    private String status;
-    private String comentario;
+    private int horasComplementares;
 
     // Relacionamento 1:1 com Aluno (lado DONO)
     @OneToOne

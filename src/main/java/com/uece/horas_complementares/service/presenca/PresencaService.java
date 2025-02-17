@@ -34,7 +34,7 @@ public class PresencaService {
             presenca.setPresente(true);
             presencaRepository.save(presenca);
         }
-        if (presenca.getPresente() == true) {
+        else if (presenca.getPresente() == true) {
             throw new RuntimeException("Presença já confirmada.");
         }
     }
