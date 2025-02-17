@@ -27,8 +27,8 @@ public class qrCodeService {
         String tokenDeValidacao = tokenService.generateTokenEvento(idEvento);
         System.out.println(tokenDeValidacao);
         // Configurações do QR Code
-        int width = 250;
-        int height = 250;
+        int width = 600;
+        int height = 600;
         String url = "http://localhost:3000/login" + "?eventoId=" +idEvento + "?tokenValidacao?=" + tokenDeValidacao;
         // Gerar o QR Code
         QRCodeWriter qrCodeWriter = new QRCodeWriter();
@@ -40,6 +40,6 @@ public class qrCodeService {
         String base64 = Base64.getEncoder().encodeToString(outputStream.toByteArray());
 
         // Retornar a imagem em base64
-        return "data:image/png;base64," + base64 + "Token de validação: ," + tokenDeValidacao;
+        return base64 ;
     }
 }

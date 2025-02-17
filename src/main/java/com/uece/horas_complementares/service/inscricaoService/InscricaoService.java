@@ -32,9 +32,6 @@ public class InscricaoService {
     public List<Evento> listarEventosNaoInscrito (Long alunoMatricula) {
         List<Evento> eventos = new ArrayList<>();
         List<Evento> eventosNaoInscritos = new ArrayList<>();
-
-
-
         for (Evento evento : eventos) {
             if (!eventos.contains(evento)) {
                 eventosNaoInscritos.add(evento);
@@ -42,4 +39,8 @@ public class InscricaoService {
         }
         return eventosNaoInscritos;
     }
+    // public Inscricao buscarInscricaoPorAlunoEvento(Long alunoMatricula, Long eventoId) {
+    //     // Specification<Inscricao> spec = new InscricaoByAlunoEvento(alunoMatricula, eventoId);
+    //     // return inscricaoRepository.findOne(spec).orElse(null);
+    // }
 }
