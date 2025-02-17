@@ -83,6 +83,7 @@ public class EventoService {
     newEvento.setMatriculaProfessor(matricula);
     newEvento.setLimiteDedescrição(evento.getLimiteDedescrição());
     newEvento.setNome(evento.getNome());
+    newEvento.setQuantidadeHorasComplementares(evento.getQuantidadeHorasComplementares());
 
     return eventoRepository.save(newEvento);
   }

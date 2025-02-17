@@ -12,6 +12,7 @@ public class EventoDTO {
     private String nome;
     private String banner;
     private String tipoHorasComplementares;
+    private int quantidadeHorasComplementares;
     private String dataInicial;
     private String dataFinal;
     private String horarioInicial;
