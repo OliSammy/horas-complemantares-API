@@ -19,22 +19,22 @@ public class HorasComplementaresApplication {
 	@Autowired
 	UserRepository userRepository;
 
-//	@PostConstruct
-//	public void insertUser(){
-//
-//		Professor prof = new Professor(
-//				1234589L,
-//				"prof thelmo",
-//				"thelmo@uece.br",
-//				true,
-//				"senha123",
-//				"tokenXYZ2y",
-//				User.TipoUsuario.PROFESSOR,
-//				null,
-//				false
-//		);
-//		String encryptedPassword = new BCryptPasswordEncoder().encode(prof.getPassword());
-//		prof.setSenha(encryptedPassword);
-//		userRepository.save(prof);
-//	}
+	// @PostConstruct
+	// public void insertUser(){
+
+	// 	Professor prof = new Professor(
+	// 			1234589L,
+	// 			"prof thelmo",
+	// 			"thelmo@uece.br",
+	// 			true,
+	// 			"senha123",
+	// 			"tokenXYZ2y",
+	// 			User.TipoUsuario.PROFESSOR,
+	// 			null,
+	// 			false
+	// 	);
+	// 	String encryptedPassword = new BCryptPasswordEncoder().encode(prof.getPassword());
+	// 	prof.setSenha(encryptedPassword);
+	// 	userRepository.save(prof);
+	// }
 }

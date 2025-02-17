@@ -10,13 +10,17 @@ import java.util.Optional;
 
 import com.uece.horas_complementares.model.DTO.user.EventoDTO;
 import com.uece.horas_complementares.model.Inscricao;
+import com.uece.horas_complementares.model.Presenca;
 import com.uece.horas_complementares.model.repository.AlunoRepository;
 import com.uece.horas_complementares.model.repository.EventoRepository;
 import com.uece.horas_complementares.model.repository.InscricaoRepository;
+import com.uece.horas_complementares.model.repository.PresencaRepository;
 import com.uece.horas_complementares.model.repository.ProfessorRepository;
 import com.uece.horas_complementares.model.user.Aluno;
 import com.uece.horas_complementares.security.TokenService;
 import com.uece.horas_complementares.service.inscricaoService.InscricaoService;
+import com.uece.horas_complementares.service.presenca.PresencaService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpHeaders;
@@ -47,6 +51,8 @@ public class EventoService {
 
     @Autowired
     private InscricaoService inscricaoService;
+    @Autowired
+    private PresencaRepository presencaRepository;
 
     @Autowired
     private InscricaoRepository inscricaoRepository;
@@ -178,9 +184,14 @@ public class EventoService {
               .orElseThrow(() -> new RuntimeException("Evento não encontrado"));
       System.out.println("evento: " + evento);
 
+    
       Inscricao inscricao = new Inscricao(aluno, evento);
 
       inscricaoRepository.save(inscricao);
+      boolean presente = false;
+      Presenca presenca = new Presenca(presente,inscricao,aluno);
+      presencaRepository.save(presenca);
+      inscricao.getPresencas().add(presenca);
 
       aluno.getInscricoes().add(inscricao);
 

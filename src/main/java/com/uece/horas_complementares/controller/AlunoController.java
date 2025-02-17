@@ -1,11 +1,8 @@
 package com.uece.horas_complementares.controller;
 
-import com.uece.horas_complementares.model.Evento;
 import com.uece.horas_complementares.model.user.Aluno;
-import com.uece.horas_complementares.service.inscricaoService.InscricaoService;
 import com.uece.horas_complementares.service.users.AlunoService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,9 +22,6 @@ public class AlunoController {
     @Autowired
     private AlunoService alunoService; 
 
-    @Autowired
-    private InscricaoService inscricaoService;
-
     @GetMapping
     public List<Aluno> listar() {
         return alunoService.listar();
@@ -36,15 +30,6 @@ public class AlunoController {
     @GetMapping("/{id}")
     public Aluno buscar(@PathVariable Long id) {
         return alunoService.buscar(id);
-    }
-
-    @GetMapping("/{id}/eventos")
-    public ResponseEntity<List<Evento>> listarEventosPorAluno(@PathVariable Long id) {
-        return ResponseEntity.ok(inscricaoService.listarEventosPorAluno(id));
-    }
-    @GetMapping("/{id}/eventos/disponiveis")
-    public ResponseEntity<List<Evento>> listarEventosDisponiveis(@PathVariable Long id) {
-        return ResponseEntity.ok(inscricaoService.listarEventosNaoInscrito(id));
     }
 
 

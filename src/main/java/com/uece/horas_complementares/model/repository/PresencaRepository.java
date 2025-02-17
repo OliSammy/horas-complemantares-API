@@ -1,21 +1,11 @@
-// package com.uece.horas_complementares.model.repository;
+package com.uece.horas_complementares.model.repository;
 
-// import org.springframework.data.jpa.repository.JpaRepository;
-// import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
-// import org.springframework.data.jpa.repository.Modifying;
-// import org.springframework.data.jpa.repository.Query;
-// import org.springframework.data.repository.query.Param;
-// import org.springframework.stereotype.Repository;
+import java.util.Optional;
 
-// import com.uece.horas_complementares.model.Inscricao;
-// import com.uece.horas_complementares.model.Presenca;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-// import jakarta.transaction.Transactional;
+import com.uece.horas_complementares.model.Presenca;
 
-// @Repository
-// public interface PresencaRepository extends JpaRepository<Presenca, Long> {
-//     @Modifying
-//     @Transactional
-//     @Query("UPDATE Presenca p SET p.presente = true WHERE p.evento.id = :eventoId AND p.usuario.id = :usuarioId")
-//     void confirmarPresenca(@Param("eventoId") Long eventoId, @Param("usuarioId") Long usuarioId);
-// }
+public interface PresencaRepository extends JpaRepository<Presenca, Long> {
+    Presenca findByIdInscricao_IdEvento_IdAndAluno_Matricula(Long idEvento, Long matriculaAluno);
+}

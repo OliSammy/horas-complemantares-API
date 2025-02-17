@@ -12,8 +12,6 @@ public class Presenca {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private boolean presente = false;
-    
-    
 
     @ManyToOne
     @JoinColumn(name = "inscricao_id") // Define a coluna FK na tabela Presenca
@@ -24,4 +22,10 @@ public class Presenca {
     @JoinColumn(name = "aluno_matricula") // Adicione esta anotação para definir a coluna FK
     @JsonIgnore
     private Aluno aluno;
+
+    public Presenca(boolean presente, Inscricao idInscricao, Aluno aluno) {
+        this.presente = presente;
+        this.idInscricao = idInscricao;
+        this.aluno = aluno;
+    }
 }

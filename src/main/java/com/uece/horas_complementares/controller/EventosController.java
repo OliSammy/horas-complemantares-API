@@ -12,7 +12,7 @@ import com.uece.horas_complementares.model.user.Professor;
 import com.uece.horas_complementares.model.user.User;
 import com.uece.horas_complementares.security.TokenService;
 import com.uece.horas_complementares.service.evento.EventoService;
-// import com.uece.horas_complementares.service.presenca.PresencaService;
+import com.uece.horas_complementares.service.presenca.PresencaService;
 import com.uece.horas_complementares.service.qrCode.qrCodeService;
 
 import jakarta.validation.Valid;
@@ -46,8 +46,8 @@ public class EventosController {
     @Autowired
     private TokenService tokenService;
     
-    // @Autowired
-    // private PresencaService presencaService;
+    @Autowired
+    private PresencaService presencaService;
 
     @Autowired
     private qrCodeService qrCodeService;
@@ -104,9 +104,7 @@ public class EventosController {
             String jwtToken = authorizationHeader.substring(7);
             this.tokenService.validateToken(jwtToken);
             this.tokenService.validateEventToken(eventToken);
-
-            //  presencaService.confirmarPresenca(idEvento, matriculaAluno);
-
+            presencaService.confirmarPresenca(idEvento, matriculaAluno);
              return ResponseEntity.ok().body("Presença confirmada com sucesso!");
     }
 

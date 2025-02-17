@@ -26,6 +26,7 @@ public class Evento {
     private Long id;
     private String nome;
     private String banner;
+    private String local;
     private String tipoHorasComplementares;
     private int quantidadeHorasComplementares;
     private String dataInicial;

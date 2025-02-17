@@ -1,6 +1,7 @@
 package com.uece.horas_complementares.model.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.uece.horas_complementares.model.*;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -13,6 +14,7 @@ import java.util.List;
 @Data
 @Entity
 @NoArgsConstructor
+@JsonIgnoreProperties({"presencas", "inscricoes"})
 @AllArgsConstructor
 @DiscriminatorValue("ALUNO")
 @ToString(onlyExplicitlyIncluded = true)

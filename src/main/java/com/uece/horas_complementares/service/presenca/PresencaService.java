@@ -1,22 +1,38 @@
-// package com.uece.horas_complementares.service.presenca;
-// import org.springframework.beans.factory.annotation.Autowired;
-// import org.springframework.data.jpa.domain.Specification;
-// import org.springframework.stereotype.Service;
-// import org.springframework.transaction.annotation.Transactional;
+package com.uece.horas_complementares.service.presenca;
+import java.util.List;
 
-// import com.uece.horas_complementares.model.Presenca;
-// import com.uece.horas_complementares.model.repository.PresencaRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-// import java.util.Optional;
+import com.uece.horas_complementares.model.Inscricao;
+import com.uece.horas_complementares.model.Presenca;
+import com.uece.horas_complementares.model.repository.InscricaoRepository;
+import com.uece.horas_complementares.model.repository.PresencaRepository;
 
-// @Service
-// public class PresencaService {
+import lombok.Data;
 
-//     @Autowired
-//     private PresencaRepository presencaRepository;
+import java.util.Optional;
 
-//     @Transactional
-//     public void confirmarPresenca(Long eventoId, Long alunoId) {
-//     presencaRepository.confirmarPresenca(eventoId, alunoId);
-// }
-// }
+@Data
+@Service
+public class PresencaService {
+
+    @Autowired
+    private PresencaRepository presencaRepository;
+
+    @Autowired
+    private InscricaoRepository inscricaoRepository;
+
+    public void confirmarPresenca(Long idEvento, Long matriculaAluno) {
+        // Encontrar a inscrição do aluno no evento
+        List<Inscricao> inscricoes = inscricaoRepository.findByIdEvento_IdAndAluno_Matricula(idEvento, matriculaAluno);
+        if (inscricoes.isEmpty()) {
+            throw new RuntimeException("Inscrição não encontrada para o aluno no evento.");
+        }
+            Presenca presenca = presencaRepository.findByIdInscricao_IdEvento_IdAndAluno_Matricula(idEvento, matriculaAluno);
+            presenca.setPresente(true);
+            presencaRepository.save(presenca);
+        
+        }
+    }
+
