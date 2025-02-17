@@ -12,6 +12,7 @@ import com.uece.horas_complementares.model.user.Professor;
 import com.uece.horas_complementares.model.user.User;
 import com.uece.horas_complementares.security.TokenService;
 import com.uece.horas_complementares.service.evento.EventoService;
+// import com.uece.horas_complementares.service.presenca.PresencaService;
 import com.uece.horas_complementares.service.qrCode.qrCodeService;
 
 import jakarta.validation.Valid;
@@ -44,6 +45,9 @@ public class EventosController {
 
     @Autowired
     private TokenService tokenService;
+    
+    // @Autowired
+    // private PresencaService presencaService;
 
     @Autowired
     private qrCodeService qrCodeService;
@@ -82,28 +86,28 @@ public class EventosController {
         return ResponseEntity.ok().body(eventos);
     }
 
-    @GetMapping("/qrcode/{idEvento}/{matriculaAluno}")
-    public ResponseEntity<?> receberQrCode(@RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader, @PathVariable Long idEvento, @PathVariable Long matriculaAluno) {
+    @GetMapping("/qrcode/{idEvento}")
+    public ResponseEntity<?> receberQrCode(@RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader, @PathVariable Long idEvento) {
         String jwtToken = authorizationHeader.substring(7);
         this.tokenService.validateToken(jwtToken);
         String url = "";
         try {
-            url = qrCodeService.gerarQRCode(idEvento, matriculaAluno);
+            url = qrCodeService.gerarQRCode(idEvento);
         } catch (WriterException | IOException e) {
             return ResponseEntity.status(500).body("Error generating QR code: " + e.getMessage());
         }
         return ResponseEntity.ok().body(url);
     }
-    @PostMapping("/presenca")
-    public ResponseEntity<?> confirmarPresenca(@RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader, @RequestHeader String eventToken) {
+    @PostMapping("/presenca/{idEvento}/{matriculaAluno}")
+    public ResponseEntity<?> confirmarPresenca(@RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader, @RequestHeader String eventToken, @PathVariable Long idEvento, @PathVariable Long matriculaAluno) {
             System.out.println("Token: " + eventToken);
             String jwtToken = authorizationHeader.substring(7);
             this.tokenService.validateToken(jwtToken);
-            String tokenevent = tokenService.validateEventToken(eventToken);
-          
-            
+            this.tokenService.validateEventToken(eventToken);
 
-                return ResponseEntity.ok().body("Presença confirmada com sucesso!");
+            //  presencaService.confirmarPresenca(idEvento, matriculaAluno);
+
+             return ResponseEntity.ok().body("Presença confirmada com sucesso!");
     }
 
 

@@ -54,13 +54,12 @@ public class TokenService {
             return null;
         }
     }
-    public String generateTokenEvento(Long idEvento, Long matriculaAluno) {
+    public String generateTokenEvento(Long idEvento) {
         try {
             Algorithm algorithm = Algorithm.HMAC256(secret);
             return JWT.create()
                 .withIssuer("Complementary_Hours")
                 .withClaim("idEvento", idEvento)
-                .withClaim("matriculaAluno", matriculaAluno)
                 .withExpiresAt(genExpirationDate())
                 .sign(algorithm);
         } catch (JWTCreationException exception) {

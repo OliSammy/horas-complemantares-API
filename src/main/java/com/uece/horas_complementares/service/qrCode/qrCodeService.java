@@ -22,14 +22,14 @@ public class qrCodeService {
     @Autowired
     private TokenService tokenService;
     
-    public String gerarQRCode(Long idEvento, Long matriculaAluno) throws WriterException, IOException {
+    public String gerarQRCode(Long idEvento) throws WriterException, IOException {
 
-        String tokenDeValidacao = tokenService.generateTokenEvento(idEvento, matriculaAluno);
+        String tokenDeValidacao = tokenService.generateTokenEvento(idEvento);
         System.out.println(tokenDeValidacao);
         // Configurações do QR Code
         int width = 250;
         int height = 250;
-        String url = "http://localhost:3000/login" + "?eventoId=" +idEvento + "?alunoMatricula=" + matriculaAluno + "?tokenValidacao?=" + tokenDeValidacao;
+        String url = "http://localhost:3000/login" + "?eventoId=" +idEvento + "?tokenValidacao?=" + tokenDeValidacao;
         // Gerar o QR Code
         QRCodeWriter qrCodeWriter = new QRCodeWriter();
         BitMatrix bitMatrix = qrCodeWriter.encode(url, BarcodeFormat.QR_CODE, width, height);
