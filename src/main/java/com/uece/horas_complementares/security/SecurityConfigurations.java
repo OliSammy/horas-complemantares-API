@@ -38,6 +38,8 @@ public class SecurityConfigurations {
                         .requestMatchers(HttpMethod.GET,"/eventos/alunos/{id}").hasRole("ALUNO")
                         .requestMatchers(HttpMethod.GET,"/eventos/professor/{id}").hasRole("PROFESSOR")
                         .requestMatchers(HttpMethod.GET,"/eventos/alunos/{id}/disponiveis").hasRole("ALUNO")
+                        .requestMatchers(HttpMethod.GET,"/eventos/qrCode/{idEvento}/{matriculaAluno}").hasRole("PROFESSOR")
+                        .requestMatchers(HttpMethod.GET,"/eventos/presenca").hasRole("ALUNO")
 
                         .requestMatchers("/v3/api-docs", "/uploads/**", "/v3/api-docs/**", "/swagger-ui.html",
                                 "/swagger-ui/**", "/swagger-resources", "/swagger-resources/**",

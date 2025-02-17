@@ -1,7 +1,9 @@
 package com.uece.horas_complementares.controller;
 
+
 import com.uece.horas_complementares.model.DTO.user.EventoDTO;
 import com.uece.horas_complementares.model.Inscricao;
+import com.uece.horas_complementares.model.Presenca;
 import com.uece.horas_complementares.model.repository.AlunoRepository;
 import com.uece.horas_complementares.model.repository.EventoRepository;
 import com.uece.horas_complementares.model.repository.InscricaoRepository;
@@ -10,15 +12,24 @@ import com.uece.horas_complementares.model.user.Professor;
 import com.uece.horas_complementares.model.user.User;
 import com.uece.horas_complementares.security.TokenService;
 import com.uece.horas_complementares.service.evento.EventoService;
+// import com.uece.horas_complementares.service.presenca.PresencaService;
+import com.uece.horas_complementares.service.qrCode.qrCodeService;
+
+import jakarta.validation.Valid;
+
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+
+import com.auth0.jwt.interfaces.DecodedJWT;
+import com.google.zxing.WriterException;
 import com.uece.horas_complementares.model.Evento;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -34,9 +45,12 @@ public class EventosController {
 
     @Autowired
     private TokenService tokenService;
+    
+    // @Autowired
+    // private PresencaService presencaService;
 
     @Autowired
-    private EventoRepository eventoRepository;
+    private qrCodeService qrCodeService;
 
     @GetMapping
     public List<Evento> listar() {
@@ -48,12 +62,6 @@ public class EventosController {
         return eventosService.buscar(id);
     }
 
-    // @GetMapping("/{eventoId}/professores")
-    // @PreAuthorize("hasRole('ADMIN') or hasRole('PROFESSOR')")
-    // public ResponseEntity<List<ProfessorEventoDTO>> getProfessores(@PathVariable Long eventoId) {
-    //     return ResponseEntity.ok(eventosService.getProfessores(eventoId));
-    // }
-
     @GetMapping("/alunos/{id}")
     public ResponseEntity<?> listarEventosPorAluno(@RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader, @PathVariable Long id) {
         String jwtToken = authorizationHeader.substring(7);
@@ -61,6 +69,7 @@ public class EventosController {
         List<Evento> eventos = eventosService.getEventosByAlunoMatricula(id);
         return ResponseEntity.ok().body(eventos);
     }
+
     @GetMapping("/alunos/{id}/disponiveis")
     public ResponseEntity<?> listarEventosDisponiveis(@RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader, @PathVariable Long id) {
         String jwtToken = authorizationHeader.substring(7);
@@ -68,12 +77,37 @@ public class EventosController {
         List<Evento> eventos = eventosService.getEventosDisponiveis(id);
         return ResponseEntity.ok().body(eventos);
     }
+
     @GetMapping("/professor/{id}")
     public ResponseEntity<?> listarEventosProfessor(@RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader, @PathVariable Long id) {
         String jwtToken = authorizationHeader.substring(7);
         this.tokenService.validateToken(jwtToken);
         List<Evento> eventos = eventosService.getEventosProfessor(id);
         return ResponseEntity.ok().body(eventos);
+    }
+
+    @GetMapping("/qrcode/{idEvento}")
+    public ResponseEntity<?> receberQrCode(@RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader, @PathVariable Long idEvento) {
+        String jwtToken = authorizationHeader.substring(7);
+        this.tokenService.validateToken(jwtToken);
+        String url = "";
+        try {
+            url = qrCodeService.gerarQRCode(idEvento);
+        } catch (WriterException | IOException e) {
+            return ResponseEntity.status(500).body("Error generating QR code: " + e.getMessage());
+        }
+        return ResponseEntity.ok().body(url);
+    }
+    @PostMapping("/presenca/{idEvento}/{matriculaAluno}")
+    public ResponseEntity<?> confirmarPresenca(@RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader, @RequestHeader String eventToken, @PathVariable Long idEvento, @PathVariable Long matriculaAluno) {
+            System.out.println("Token: " + eventToken);
+            String jwtToken = authorizationHeader.substring(7);
+            this.tokenService.validateToken(jwtToken);
+            this.tokenService.validateEventToken(eventToken);
+
+            //  presencaService.confirmarPresenca(idEvento, matriculaAluno);
+
+             return ResponseEntity.ok().body("Presença confirmada com sucesso!");
     }
 
 

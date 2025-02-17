@@ -5,10 +5,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.rsocket.RSocketProperties.Server.Spec;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import com.uece.horas_complementares.model.Evento;
 import com.uece.horas_complementares.model.Inscricao;
+import com.uece.horas_complementares.model.Presenca;
 import com.uece.horas_complementares.model.repository.InscricaoRepository;
 
 @Service

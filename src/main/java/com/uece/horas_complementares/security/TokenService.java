@@ -54,6 +54,33 @@ public class TokenService {
             return null;
         }
     }
+    public String generateTokenEvento(Long idEvento) {
+        try {
+            Algorithm algorithm = Algorithm.HMAC256(secret);
+            return JWT.create()
+                .withIssuer("Complementary_Hours")
+                .withClaim("idEvento", idEvento)
+                .withExpiresAt(genExpirationDate())
+                .sign(algorithm);
+        } catch (JWTCreationException exception) {
+            throw new RuntimeException("Error while generating event token", exception);
+        }
+    }
+    public String validateEventToken(String token) {
+        try {
+            Algorithm algorithm = Algorithm.HMAC256(secret);
+            return JWT.require(algorithm)
+                    .withIssuer("Complementary_Hours")
+                    .build()
+                    .verify(token)
+                    .getSubject();
+        } catch (InvalidTokenException exception){
+
+            throw new InvalidTokenException("Token JWT invalido ou expirado");
+        }catch (TokenExpiredException ex){
+            return null;
+        }
+    }
 
     public User getUserFromToken(String token) {
         try {
