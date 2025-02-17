@@ -45,6 +45,9 @@ public class EventosController {
     private EventoService eventosService;
 
     @Autowired
+    private EventoRepository eventosRepository;
+
+    @Autowired
     private TokenService tokenService;
     
     @Autowired
@@ -109,7 +112,9 @@ public class EventosController {
             this.tokenService.validateToken(jwtToken);
             this.tokenService.validateEventToken(eventToken);
             presencaService.confirmarPresenca(idEvento, matriculaAluno);
-             return ResponseEntity.ok().body("Presença confirmada com sucesso!");
+            Map<String, String> response = new HashMap<>();
+            response.put("msg", "Presença confirmada com sucesso!");
+             return ResponseEntity.ok().body(response);
     }
 
 

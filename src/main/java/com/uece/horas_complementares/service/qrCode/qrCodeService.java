@@ -29,7 +29,7 @@ public class qrCodeService {
         // Configurações do QR Code
         int width = 600;
         int height = 600;
-        String url = "http://localhost:3000/login" + "?eventoId=" +idEvento + "?tokenValidacao?=" + tokenDeValidacao;
+        String url = "http://localhost:3000/login" + "?eventoId=" +idEvento + "&tokenValidacao?=" + tokenDeValidacao;
         // Gerar o QR Code
         QRCodeWriter qrCodeWriter = new QRCodeWriter();
         BitMatrix bitMatrix = qrCodeWriter.encode(url, BarcodeFormat.QR_CODE, width, height);
