@@ -38,48 +38,40 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class EventoService {
-    @Autowired
-    private EventoRepository eventoRepository;
+  @Autowired
+  private EventoRepository eventoRepository;
 
+  @Autowired
+  private AlunoRepository alunoRepository;
 
-    @Autowired
-    private AlunoRepository alunoRepository;
+  @Autowired
+  private TokenService tokenService;
 
+  @Autowired
+  private InscricaoService inscricaoService;
 
-    @Autowired
-    private TokenService tokenService;
+  @Autowired
+  private PresencaRepository presencaRepository;
 
-    @Autowired
-    private InscricaoService inscricaoService;
-    @Autowired
-    private PresencaRepository presencaRepository;
+  @Autowired
+  private InscricaoRepository inscricaoRepository;
 
-    @Autowired
-    private InscricaoRepository inscricaoRepository;
-
-
-
-    private static final String UPLOAD_DIR = "src/main/resources/uploads/";
-
+  private static final String UPLOAD_DIR = "src/main/resources/uploads/";
 
   public List<Evento> listar() {
     return eventoRepository.findAll();
   }
+
   public Evento buscar(Long id) {
     return eventoRepository.findById(id).get();
   }
 
-
-
   public Evento criar(EventoDTO evento, Professor matricula, MultipartFile file) {
-
     Evento newEvento = new Evento();
 
-
     if (!(file.isEmpty())) {
-      String caminho = this.uploadFoto(file,evento.getNome());
+      String caminho = this.uploadFoto(file, evento.getNome());
       newEvento.setBanner(caminho);
-
     }
 
     newEvento.setDescricao(evento.getDescricao());
@@ -96,7 +88,6 @@ public class EventoService {
   }
 
   public String uploadFoto(MultipartFile file, String nome) {
-
     long tamanhoMaximo = 5 * 1024 * 1024; // 5 MB
     List<String> tiposPermitidos = Arrays.asList("image/jpeg", "image/png");
 
@@ -115,13 +106,13 @@ public class EventoService {
 
     if (file.getSize() > tamanhoMaximo) {
       throw new IllegalArgumentException("O arquivo " + file.getOriginalFilename()
-              + " é muito grande. O tamanho máximo permitido é de 5 MB.");
+          + " é muito grande. O tamanho máximo permitido é de 5 MB.");
     }
 
     String tipoConteudo = file.getContentType();
     if (!tiposPermitidos.contains(tipoConteudo)) {
       throw new IllegalArgumentException("Tipo de arquivo não suportado para o arquivo "
-              + file.getOriginalFilename() + ". Apenas imagens JPEG e PNG são permitidas.");
+          + file.getOriginalFilename() + ". Apenas imagens JPEG e PNG são permitidas.");
     }
 
     try {
@@ -132,16 +123,11 @@ public class EventoService {
       Files.write(filePath, file.getBytes());
 
       // Retorna o caminho do arquivo salvo
-      return "/uploads/" + nome +  "/" + fileName;
+      return "/uploads/" + nome + "/" + fileName;
     } catch (IOException e) {
       throw new RuntimeException("Erro ao carregar o arquivo " + file.getOriginalFilename(), e);
     }
   }
-
-
-
-
-
 
   public Evento atualizar(Long id, Evento evento) {
     Evento eventoAtualizado = eventoRepository.findById(id).get();
@@ -156,49 +142,50 @@ public class EventoService {
   public void deletar(Long id) {
     eventoRepository.deleteById(id);
   }
-  public List<Evento>getEventosByAlunoMatricula(Long alunoMatricula) {
+
+  public List<Evento> getEventosByAlunoMatricula(Long alunoMatricula) {
     Specification<Evento> spec = new EventoByAlunoMatricula(alunoMatricula);
     List<Evento> eventos = eventoRepository.findAll(spec);
     return eventos;
   }
+
   public List<Evento> getEventosDisponiveis(Long alunoMatricula) {
     Specification<Evento> spec = new EventoNaoInscritoPorAluno(alunoMatricula);
     List<Evento> eventos = eventoRepository.findAll(spec);
     return eventos;
   }
+
   public List<Evento> getEventosProfessor(Long professorMatricula) {
     Specification<Evento> spec = new EventoByProfessor(professorMatricula);
     List<Evento> eventos = eventoRepository.findAll(spec);
     return eventos;
   }
 
+  private ProfessorEventoDTO toProfessorDTO(Professor professor) {
+    return new ProfessorEventoDTO(professor.getMatricula(), professor.getNome(), professor.getEmail());
+  }
 
-    private ProfessorEventoDTO toProfessorDTO(Professor professor) {
-        return new ProfessorEventoDTO(professor.getMatricula(), professor.getNome(), professor.getEmail());
-    }
+  public void inscreverAluno(Long idEvento, Aluno aluno) {
+    Evento evento = eventoRepository.findById(idEvento)
+        .orElseThrow(() -> new RuntimeException("Evento não encontrado"));
 
-    public void inscreverAluno(Long idEvento, Aluno aluno) {
+    // Verifica se o aluno já está inscrito no evento
+    Optional<Inscricao> inscricaoExistente = inscricaoRepository.findByIdEvento_IdAndAluno_Matricula(idEvento, aluno.getMatricula());
+    if (inscricaoExistente.isPresent()) {
+      throw new IllegalArgumentException("O aluno já está inscrito neste evento.");
+    }else{
 
+    Inscricao inscricao = new Inscricao(aluno, evento);
+    inscricaoRepository.save(inscricao);
 
-      Evento evento = eventoRepository.findById(idEvento)
-              .orElseThrow(() -> new RuntimeException("Evento não encontrado"));
-      System.out.println("evento: " + evento);
+    boolean presente = false;
+    Presenca presenca = new Presenca(presente, inscricao, aluno);
+    presencaRepository.save(presenca);
 
-    
-      Inscricao inscricao = new Inscricao(aluno, evento);
-
-      inscricaoRepository.save(inscricao);
-      boolean presente = false;
-      Presenca presenca = new Presenca(presente,inscricao,aluno);
-      presencaRepository.save(presenca);
-      inscricao.getPresencas().add(presenca);
-
-      aluno.getInscricoes().add(inscricao);
-
-      alunoRepository.save(aluno);
-    }
-
-
+    aluno.getInscricoes().add(inscricao);
+    alunoRepository.save(aluno);
+  }
+}
 }
 
 

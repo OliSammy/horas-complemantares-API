@@ -6,8 +6,9 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import java.util.List;
+import java.util.Optional;
 @Repository
 public interface InscricaoRepository extends JpaRepository<Inscricao, Long>,JpaSpecificationExecutor<Inscricao> {
     List<Inscricao> findByAlunoMatricula(Long alunoMatricula);
-    List<Inscricao> findByIdEvento_IdAndAluno_Matricula(Long idEvento, Long matriculaAluno);
+    Optional<Inscricao> findByIdEvento_IdAndAluno_Matricula(Long idEvento, Long matriculaAluno);
 }

@@ -3,10 +3,12 @@ package com.uece.horas_complementares.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.uece.horas_complementares.model.user.Aluno;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
 @Entity
+@AllArgsConstructor
 public class Presenca {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,9 +25,17 @@ public class Presenca {
     @JsonIgnore
     private Aluno aluno;
 
+    public Presenca() {
+    }
+    public boolean getPresente() {
+        return presente;
+    }
+
     public Presenca(boolean presente, Inscricao idInscricao, Aluno aluno) {
         this.presente = presente;
         this.idInscricao = idInscricao;
         this.aluno = aluno;
     }
+
+
 }

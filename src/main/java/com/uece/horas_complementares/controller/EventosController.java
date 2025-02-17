@@ -30,6 +30,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -86,7 +87,7 @@ public class EventosController {
         return ResponseEntity.ok().body(eventos);
     }
 
-    @GetMapping("/qrcode/{idEvento}")
+@GetMapping("/qrcode/{idEvento}")
     public ResponseEntity<?> receberQrCode(@RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader, @PathVariable Long idEvento) {
         String jwtToken = authorizationHeader.substring(7);
         this.tokenService.validateToken(jwtToken);
@@ -96,7 +97,10 @@ public class EventosController {
         } catch (WriterException | IOException e) {
             return ResponseEntity.status(500).body("Error generating QR code: " + e.getMessage());
         }
-        return ResponseEntity.ok().body(url);
+        Map<String, String> response = new HashMap<>();
+        response.put("qrcode", url);
+
+        return ResponseEntity.ok().body(response);
     }
     @PostMapping("/presenca/{idEvento}/{matriculaAluno}")
     public ResponseEntity<?> confirmarPresenca(@RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader, @RequestHeader String eventToken, @PathVariable Long idEvento, @PathVariable Long matriculaAluno) {
