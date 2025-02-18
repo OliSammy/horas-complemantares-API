@@ -5,8 +5,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import com.uece.horas_complementares.model.DTO.user.EventoDTO;
 import com.uece.horas_complementares.model.Inscricao;
@@ -160,7 +162,15 @@ public class EventoService {
   public List<Evento> getEventosProfessor(Long professorMatricula) {
     Specification<Evento> spec = new EventoByProfessor(professorMatricula);
     List<Evento> eventos = eventoRepository.findAll(spec);
-    return eventos;
+    //mexer aqui
+    return eventos.stream().map(evento -> {
+      String banner = evento.getBanner();
+      if (banner != null) {
+        String bannerBase64 = Base64.getEncoder().encodeToString(banner.getBytes());
+        evento.setBanner(bannerBase64);
+      }
+      return evento;
+    }).collect(Collectors.toList());
   }
 
   private ProfessorEventoDTO toProfessorDTO(Professor professor) {

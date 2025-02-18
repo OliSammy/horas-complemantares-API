@@ -3,6 +3,7 @@ package com.uece.horas_complementares.controller;
 import com.uece.horas_complementares.model.user.Aluno;
 import com.uece.horas_complementares.service.users.AlunoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -47,5 +48,11 @@ public class AlunoController {
     @DeleteMapping("/{id}")
     public void deletar(@PathVariable Long id) {
         alunoService.deletar(id);
+    }
+
+    @GetMapping("/professor/{idProfessor}/evento/{idEvento}")
+    public ResponseEntity<?> buscarAlunosPorProfessorEEvento(@PathVariable Long idProfessor, @PathVariable Long idEvento) {
+        List<Aluno> alunos = alunoService.buscarAlunosPorProfessorEEvento(idProfessor, idEvento);
+        return ResponseEntity.ok().body(alunos);
     }
 }

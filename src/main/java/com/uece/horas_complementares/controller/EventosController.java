@@ -12,6 +12,7 @@ import com.uece.horas_complementares.model.user.Professor;
 import com.uece.horas_complementares.model.user.User;
 import com.uece.horas_complementares.security.TokenService;
 import com.uece.horas_complementares.service.evento.EventoService;
+import com.uece.horas_complementares.service.horasComplementares.HorasComplementaresService;
 import com.uece.horas_complementares.service.presenca.PresencaService;
 import com.uece.horas_complementares.service.qrCode.qrCodeService;
 
@@ -46,6 +47,8 @@ public class EventosController {
 
     @Autowired
     private EventoRepository eventosRepository;
+    @Autowired
+    private HorasComplementaresService horasComplementaresService;
 
     @Autowired
     private TokenService tokenService;
@@ -112,6 +115,7 @@ public class EventosController {
             this.tokenService.validateToken(jwtToken);
             this.tokenService.validateEventToken(eventToken);
             presencaService.confirmarPresenca(idEvento, matriculaAluno);
+            horasComplementaresService.adicionarHorasComplementares(matriculaAluno, idEvento);
             Map<String, String> response = new HashMap<>();
             response.put("msg", "Presença confirmada com sucesso!");
              return ResponseEntity.ok().body(response);
@@ -151,6 +155,8 @@ public class EventosController {
         eventosService.inscreverAluno(idEvento, usuario);
         return ResponseEntity.ok().body(Map.of("msg", "Inscrição realizada com sucesso."));
     }
+
+
 
 
 }
