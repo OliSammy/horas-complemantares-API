@@ -53,6 +53,6 @@ public class AlunoController {
     @GetMapping("/{id}/professor/{idProfessor}/evento/{idEvento}")
     public ResponseEntity<?> buscarAlunosPorProfessorEEvento(@PathVariable Long id, @PathVariable Long idProfessor, @PathVariable Long idEvento) {
         List<Aluno> alunos = alunoService.buscarAlunosPorProfessorEEvento(id, idProfessor, idEvento);
-        return ResponseEntity.ok().body(alunos);;
+        return ResponseEntity.ok().body(alunos);
     }
 }

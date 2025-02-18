@@ -16,7 +16,7 @@
 
  @RestController
  @RequestMapping("/horas-complementares") // Classe que controla as rotas relacionadas às horas complementares
- public class HorasComplementares {
+ public class HorasComplementaresController {
     
      @Autowired
      private HorasComplementaresService horasComplementaresService; //falta implementar
@@ -24,6 +24,7 @@
      @PutMapping("/alunos/{alunoId}/evento/{eventoId}")
         public ResponseEntity<?> adicionarHorasComplementares(@PathVariable Long alunoId, @PathVariable Long eventoId) {
             horasComplementaresService.adicionarHorasComplementares(alunoId, eventoId);
+            return ResponseEntity.ok().build();
         }
 
 
