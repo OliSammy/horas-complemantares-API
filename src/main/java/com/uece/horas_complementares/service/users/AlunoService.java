@@ -1,5 +1,8 @@
 package com.uece.horas_complementares.service.users;
 
+import com.uece.horas_complementares.model.repository.UserRepository;
+import com.uece.horas_complementares.model.spec.AlunoByEventoIdSpec;
+import com.uece.horas_complementares.model.spec.AlunoByIdSpec;
 import com.uece.horas_complementares.model.user.Aluno;
 
 import java.util.List;
@@ -9,7 +12,9 @@ import com.uece.horas_complementares.model.Evento;
 import com.uece.horas_complementares.model.DTO.user.EventoDTO;
 import com.uece.horas_complementares.model.repository.AlunoRepository;
 
+import com.uece.horas_complementares.model.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -17,6 +22,8 @@ public class AlunoService {
 
     @Autowired
     private AlunoRepository alunoRepository;
+    @Autowired
+    private UserRepository userRepository;
 
     public List<Aluno> listar() {
         return alunoRepository.findAll();
@@ -41,6 +48,21 @@ public class AlunoService {
 
     public void deletar(Long matricula) {
         alunoRepository.deleteByMatricula(matricula);
+    }
+
+    public List<Aluno> buscarAlunosPorProfessorEEvento(Long id, Long idProfessor, Long idEvento) {
+        Specification<User> alunoByIdSpec = new AlunoByIdSpec(id);
+        Specification<User> alunoByEventoIdSpec = new AlunoByEventoIdSpec(idEvento, idProfessor);
+
+        List<Aluno> alunos = userRepository.findAll(alunoByIdSpec.and(alunoByEventoIdSpec))
+                .stream()
+                .filter(user -> user instanceof Aluno)
+                .map(user -> (Aluno) user)
+                .collect(Collectors.toList());
+
+
+        return alunos;
+
     }
 
     // public List<EventoDTO> listarEventos(Long alunoId) {
