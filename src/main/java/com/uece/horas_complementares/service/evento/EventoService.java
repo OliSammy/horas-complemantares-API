@@ -22,6 +22,7 @@ import com.uece.horas_complementares.model.user.Aluno;
 import com.uece.horas_complementares.security.TokenService;
 import com.uece.horas_complementares.service.inscricaoService.InscricaoService;
 import com.uece.horas_complementares.service.presenca.PresencaService;
+import com.uece.horas_complementares.util.ImageToBase64Converter;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
@@ -147,30 +148,45 @@ public class EventoService {
     eventoRepository.deleteById(id);
   }
 
-  public List<Evento> getEventosByAlunoMatricula(Long alunoMatricula) {
-    Specification<Evento> spec = new EventoByAlunoMatricula(alunoMatricula);
-    List<Evento> eventos = eventoRepository.findAll(spec);
-    return eventos;
-  }
-
   public List<Evento> getEventosDisponiveis(Long alunoMatricula) {
+    ImageToBase64Converter imageToBase64Converter = new ImageToBase64Converter();
     Specification<Evento> spec = new EventoNaoInscritoPorAluno(alunoMatricula);
     List<Evento> eventos = eventoRepository.findAll(spec);
-    return eventos;
-  }
 
-  public List<Evento> getEventosProfessor(Long professorMatricula) {
-    Specification<Evento> spec = new EventoByProfessor(professorMatricula);
-    List<Evento> eventos = eventoRepository.findAll(spec);
-    //mexer aqui
     return eventos.stream().map(evento -> {
       String banner = evento.getBanner();
       if (banner != null) {
-        String bannerBase64 = Base64.getEncoder().encodeToString(banner.getBytes());
-        evento.setBanner(bannerBase64);
+        evento.setBanner(imageToBase64Converter.convertImageToBase64(banner)); 
       }
       return evento;
     }).collect(Collectors.toList());
+  }
+public List<Evento> getEventosByAlunoMatricula(Long alunoMatricula) {
+    Specification<Evento> spec = new EventoByAlunoMatricula(alunoMatricula);
+    List<Evento> eventos = eventoRepository.findAll(spec);
+    ImageToBase64Converter imageToBase64Converter = new ImageToBase64Converter();
+    return eventos.stream().map(evento -> {
+      String banner = evento.getBanner();
+      if (banner != null) {
+        evento.setBanner(imageToBase64Converter.convertImageToBase64(banner)); 
+      }
+      return evento;
+    }).collect(Collectors.toList());
+  }
+
+  public List<Evento> getEventosProfessor(Long professorMatricula) {
+    ImageToBase64Converter imageToBase64Converter = new ImageToBase64Converter();
+    Specification<Evento> spec = new EventoByProfessor(professorMatricula);
+    List<Evento> eventos = eventoRepository.findAll(spec);
+
+    return eventos.stream().map(evento -> {
+      String banner = evento.getBanner();
+      if (banner != null) {
+        evento.setBanner(imageToBase64Converter.convertImageToBase64(banner)); 
+      }
+      return evento;
+    }).collect(Collectors.toList());
+
   }
 
   private ProfessorEventoDTO toProfessorDTO(Professor professor) {
