@@ -50,11 +50,10 @@ public class AlunoService {
         alunoRepository.deleteByMatricula(matricula);
     }
 
-    public List<Aluno> buscarAlunosPorProfessorEEvento(Long id, Long idProfessor, Long idEvento) {
-        Specification<User> alunoByIdSpec = new AlunoByIdSpec(id);
+    public List<Aluno> buscarAlunosPorProfessorEEvento(Long idProfessor, Long idEvento) {
         Specification<User> alunoByEventoIdSpec = new AlunoByEventoIdSpec(idEvento, idProfessor);
 
-        List<Aluno> alunos = userRepository.findAll(alunoByIdSpec.and(alunoByEventoIdSpec))
+        List<Aluno> alunos = userRepository.findAll(alunoByEventoIdSpec)
                 .stream()
                 .filter(user -> user instanceof Aluno)
                 .map(user -> (Aluno) user)

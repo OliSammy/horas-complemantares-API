@@ -1,7 +1,7 @@
 package com.uece.horas_complementares.model.repository;
 
 
-import com.uece.horas_complementares.controller.HorasComplementares;
+
 import com.uece.horas_complementares.model.HoraComplementar;
 import com.uece.horas_complementares.model.Inscricao;
 import org.springframework.data.jpa.domain.Specification;

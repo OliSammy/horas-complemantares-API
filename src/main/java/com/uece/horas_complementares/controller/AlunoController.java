@@ -50,9 +50,9 @@ public class AlunoController {
         alunoService.deletar(id);
     }
 
-    @GetMapping("/{id}/professor/{idProfessor}/evento/{idEvento}")
-    public ResponseEntity<?> buscarAlunosPorProfessorEEvento(@PathVariable Long id, @PathVariable Long idProfessor, @PathVariable Long idEvento) {
-        List<Aluno> alunos = alunoService.buscarAlunosPorProfessorEEvento(id, idProfessor, idEvento);
-        return ResponseEntity.ok().body(alunos);;
+    @GetMapping("/professor/{idProfessor}/evento/{idEvento}")
+    public ResponseEntity<?> buscarAlunosPorProfessorEEvento(@PathVariable Long idProfessor, @PathVariable Long idEvento) {
+        List<Aluno> alunos = alunoService.buscarAlunosPorProfessorEEvento(idProfessor, idEvento);
+        return ResponseEntity.ok().body(alunos);
     }
 }

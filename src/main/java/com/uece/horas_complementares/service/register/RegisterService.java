@@ -8,6 +8,7 @@ import com.uece.horas_complementares.model.Inscricao;
 import com.uece.horas_complementares.model.Presenca;
 import com.uece.horas_complementares.model.exception.auth.InvalidLoginException;
 import com.uece.horas_complementares.model.exception.user.UserNotFoundException;
+import com.uece.horas_complementares.model.repository.HorasComplementaresRepository;
 import com.uece.horas_complementares.model.repository.UserRepository;
 import com.uece.horas_complementares.model.user.Aluno;
 import com.uece.horas_complementares.model.user.Professor;
@@ -31,6 +32,9 @@ public class RegisterService {
     private AuthenticationManager authenticationManager;
     @Autowired
     private UserRepository repository;
+
+    @Autowired
+    private HorasComplementaresRepository horasComplementaresRepository;
     @Autowired
     private TokenService tokenService;
     @Autowired
@@ -73,6 +77,13 @@ public class RegisterService {
         String encryptedPassword = new BCryptPasswordEncoder().encode(data.password());
         newUser.setSenha(encryptedPassword);
         this.repository.save(newUser);
+        HoraComplementar horaComplementar = new HoraComplementar();
+        if(newUser instanceof Aluno){
+            horaComplementar.setAluno((Aluno) newUser);
+            horaComplementar.setHorasComplementares(0);
+            horasComplementaresRepository.save(horaComplementar);
+        }
+
         return newUser;
     }
 
