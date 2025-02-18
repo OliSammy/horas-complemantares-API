@@ -1,6 +1,7 @@
  package com.uece.horas_complementares.controller;
 
- import com.uece.horas_complementares.service.horasComplementares.HorasComplementaresService;
+ import com.uece.horas_complementares.model.HoraComplementar;
+import com.uece.horas_complementares.service.horasComplementares.HorasComplementaresService;
  import org.springframework.beans.factory.annotation.Autowired;
  import org.springframework.http.ResponseEntity;
  import org.springframework.security.access.method.P;
@@ -27,7 +28,12 @@
             return ResponseEntity.ok().build();
         }
 
-
+        @GetMapping("/alunos/{matricula}")
+        public ResponseEntity<?> listar(@PathVariable Long matricula) {
+            HoraComplementar hrComp = horasComplementaresService.listar(matricula);
+            System.out.println(hrComp);
+            return ResponseEntity.ok().body(hrComp);
+        }
 
 
 //     @GetMapping("/{id}")

@@ -23,7 +23,14 @@ public class HorasComplementaresService {
 
     @Autowired
     private EventoRepository eventoRepository;
-
+    public HoraComplementar listar(Long alunoId) {
+        Specification<HoraComplementar> spec = new HoraComplementarByAlunoIdSpec(alunoId);
+        Optional<HoraComplementar> newHoraComplementar = horasComplementaresRepository.findOne(spec);
+        if (newHoraComplementar.isEmpty()){
+            throw new RuntimeException("Aluno não encontrado");
+        }
+        return newHoraComplementar.get();
+    }
     public void adicionarHorasComplementares(Long alunoId, Long eventoId) {
         Specification<HoraComplementar> spec = new HoraComplementarByAlunoIdSpec(alunoId);
         Optional<HoraComplementar> newHoraComplementar = horasComplementaresRepository.findOne(spec);
@@ -48,6 +55,7 @@ public class HorasComplementaresService {
             hrComp.setHorasComplementares(200);
 
         }else{
+            System.out.println(hrComp.getHorasComplementares() + evento.getQuantidadeHorasComplementares());
             hrComp.setHorasComplementares(hrComp.getHorasComplementares() + evento.getQuantidadeHorasComplementares());
         }
 
