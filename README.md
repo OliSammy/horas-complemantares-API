@@ -178,7 +178,7 @@ src/main/resources/
 
 ## 🎯 Funcionalidades
 
-### 👨 Gestão de Alunos
+###  Gestão de Alunos
 - Registro e autenticação de alunos
 - Perfil e visualização de horas complementares
 - Inscrição em eventos disponíveis
